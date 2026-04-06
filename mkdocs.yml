@@ -1,0 +1,31 @@
+site_name: CPTS Writeups
+site_url: https://thewzz.github.io/cpts-writeups
+site_description: Writeups do curso preparatório CPTS
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: teal
+      accent: teal
+  features:
+    - navigation.sections
+    - navigation.top
+    - search.highlight
+    - content.code.copy
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - admonition
+  - pymdownx.details
+  - attr_list
+
+nav:
+  - Home: index.md
+  - Máquinas:
+    - Índice: machines/index.md
+    - Robot: machines/robot.md
+  - Anotações:
+    - Índice: notes/index.md
