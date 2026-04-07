@@ -26,6 +26,7 @@ nav:
   - Home: index.md
   - Máquinas:
     - Índice: machines/index.md
+    - Getting Started: machines/getting-started.md
     - Robot: machines/robot.md
   - Anotações:
     - Índice: notes/index.md
