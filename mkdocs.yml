@@ -1,6 +1,10 @@
 site_name: CPTS Writeups
 site_url: https://thewzz.github.io/cpts-writeups
 site_description: Writeups do curso preparatório CPTS
+
+extra_css:
+  - stylesheets/extra.css
+
 theme:
   name: material
   palette:
