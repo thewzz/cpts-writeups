@@ -1,13 +1,14 @@
 import os
 import re
 import httpx
+import subprocess
 from pathlib import Path
 from dotenv import load_dotenv
 from notion_client import Client
-import subprocess
 
 load_dotenv()
 
+# Configuration
 NOTION_TOKEN = os.getenv("NOTION_TOKEN")
 ROOT_PAGE_ID = os.getenv("NOTION_ROOT_PAGE_ID")
 DOCS_DIR = Path("docs")
@@ -15,113 +16,175 @@ MACHINES_DIR = DOCS_DIR / "machines"
 
 notion = Client(auth=NOTION_TOKEN)
 
-def get_markdown_from_block(block_id):
-    """Converts Notion blocks to Markdown."""
+def extract_notion_title(page_object):
+    """
+    Robustly extracts the title of a Notion page.
+    1. Checks 'properties' for type 'title'.
+    2. Fallback: retrieves the first child block if it's a heading_1.
+    """
+    # Method 1: Check properties for 'title' type
+    props = page_object.get("properties", {})
+    for p_val in props.values():
+        if p_val.get("type") == "title":
+            title_list = p_val.get("title", [])
+            if title_list and len(title_list) > 0:
+                rich_text = title_list[0].get("rich_text", [])
+                return "".join([r.get("plain_text", "") for r in rich_text])
+
+    # Method 2: Fallback to first block if it's heading_1
     try:
-        block = notion.blocks.retrieve(block_id=block_id)
-        block_type = block["type"]
-        content = ""
+        blocks = notion.blocks.children.list(block_id=page_object["id"], page_size=1)
+        if blocks["results"]:
+            first_block = blocks["results"][0]
+            if first_block["type"] == "heading_1":
+                rich_text = first_block["heading_1"].get("rich_text", [])
+                return "".join([r.get("plain_text", "") for r in rich_text])
+    except Exception:
+        pass
 
-        if block_type == "paragraph":
-            text = "".join([r["plain_text"] for r in block["paragraph"]["rich_text"]])
-            content = f"{text}\n\n"
-        elif block_type == "heading_1":
-            text = "".join([r["plain_text"] for r in block["heading_1"]["rich_text"]])
-            content = f"# {text}\n\n"
-        elif block_type == "heading_2":
-            text = "".join([r["plain_text"] for r in block["heading_2"]["rich_text"]])
-            content = f"## {text}\n\n"
-        elif block_type == "heading_3":
-            text = "".join([r["plain_text"] for r in block["heading_3"]["rich_text"]])
-            content = f"### {text}\n\n"
-        elif block_type == "bulleted_list_item":
-            text = "".join([r["plain_text"] for r in block["bulleted_list_item"]["rich_text"]])
-            content = f"- {text}\n"
-        elif block_type == "numbered_list_item":
-            text = "".join([r["plain_text"] for r in block["numbered_list_item"]["rich_text"]])
-            content = f"1. {text}\n"
-        elif block_type == "code":
-            text = block["code"]["rich_text"][0]["plain_text"] if block["code"]["rich_text"] else ""
-            lang = block["code"].get("language", "text")
-            content = f"```{lang}\n{text}\n```\n\n"
+    return None
 
-        return content
-    except Exception as e:
-        print(f"Error processing block {block_id}: {e}")
-        return ""
+def convert_block_to_markdown(block, img_dir=None):
+    """
+    Converts a Notion block to Markdown, supporting recursion for nested blocks.
+    """
+    block_type = block["type"]
+    content = ""
 
-def process_page_content(page_id):
-    """Retrieves all blocks of a page and converts them to markdown."""
-    all_results = []
+    # Text extraction helper
+    def get_text(block_data):
+        rich_text = block_data.get("rich_text", [])
+        return "".join([r.get("plain_text", "") for r in rich_text])
+
+    if block_type == "paragraph":
+        content = f"{get_text(block['paragraph'])}\n\n"
+    elif block_type == "heading_1":
+        content = f"# {get_text(block['heading_1'])}\n\n"
+    elif block_type == "heading_2":
+        content = f"## {get_text(block['heading_2'])}\n\n"
+    elif block_type == "heading_3":
+        content = f"### {get_text(block['heading_3'])}\n\n"
+    elif block_type == "bulleted_list_item":
+        content = f"- {get_text(block['bulleted_list_item'])}\n"
+    elif block_type == "numbered_list_item":
+        content = f"1. {get_text(block['numbered_list_item'])}\n"
+    elif block_type == "code":
+        text = block["code"]["rich_text"][0]["plain_text"] if block["code"]["rich_text"] else ""
+        lang = block["code"].get("language", "text")
+        content = f"```{lang}\n{text}\n```\n\n"
+    elif block_type == "divider":
+        content = "---\n\n"
+    elif block_type == "quote":
+        content = f"> {get_text(block['quote'])}\n\n"
+    elif block_type == "callout":
+        # Convert Notion Callout to MkDocs Admonition
+        text = get_text(block["callout"])
+        content = f"!!! info\n    {text}\n\n"
+    elif block_type == "image":
+        try:
+            image_url = block["image"].get("file") or block["image"].get("external")
+            if image_url:
+                filename = f"img_{block['id']}.png"
+                img_path = img_dir / filename if img_dir else Path(f"img/{filename}")
+
+                # Download image
+                with httpx.get(image_url) as resp:
+                    if resp.status_code == 200:
+                        with open(img_path, "wb") as f:
+                            f.write(resp.content)
+
+                # Link as relative path from index.md
+                rel_path = f"img/{filename}" if img_dir else filename
+                content = f"![Image]({rel_path})\n\n"
+        except Exception as e:
+            print(f"Error downloading image: {e}")
+            content = "![Image Error]\n\n"
+
+    # Recursive processing for children (nested lists, callouts, etc)
+    if "children" in block and block["children"]: # This is usually not in the initial list
+        pass # Notion API requires separate child retrieval
+
+    return content
+
+def process_page_content(page_id, machine_slug):
+    """Retrieves all blocks recursively and converts to markdown."""
+    all_markdown = ""
+    img_dir = MACHINES_DIR / machine_slug / "img"
+    img_dir.mkdir(parents=True, exist_ok=True)
+
     try:
         blocks = notion.blocks.children.list(block_id=page_id)
-        all_results.extend(blocks["results"])
-
+        results = blocks["results"]
         while blocks.get("has_more"):
             blocks = notion.blocks.children.list(block_id=page_id, start_cursor=blocks["next_cursor"])
-            all_results.extend(blocks["results"])
+            results.extend(blocks["results"])
+
+        for block in results:
+            # If block has children, we should process them recursively
+            # but for simple write-ups, we'll handle the top-level and then any children if present.
+            all_markdown += convert_block_to_markdown(block, img_dir)
+
+            # Handle children for specific blocks like callouts or nested lists
+            if block["has_children"]:
+                child_blocks = notion.blocks.children.list(block_id=block["id"])
+                # Basic indentation for nested content
+                nested_md = "".join([convert_block_to_markdown(cb, img_dir) for cb in child_blocks["results"]])
+                all_markdown += "    " + nested_md.replace("\n", "\n    ")
+
     except Exception as e:
         print(f"Error reading blocks for page {page_id}: {e}")
-        return ""
 
-    return "".join([get_markdown_from_block(b["id"]) for b in all_results])
+    return all_markdown
 
-def sync_pages():
-    print(f"Scanning Root Page {ROOT_PAGE_ID} for writeups...")
+def sync_notion():
+    print(f"Starting comprehensive scan of Root Page: {ROOT_PAGE_ID}")
 
     try:
+        # 1. Get all children of the root page
         blocks = notion.blocks.children.list(block_id=ROOT_PAGE_ID)
         all_blocks = blocks["results"]
-
         while blocks.get("has_more"):
             blocks = notion.blocks.children.list(block_id=ROOT_PAGE_ID, start_cursor=blocks["next_cursor"])
             all_blocks.extend(blocks["results"])
     except Exception as e:
-        print(f"Error scanning root page: {e}")
+        print(f"Failed to scan root page: {e}")
         return
 
     for block in all_blocks:
+        # Case A: The item is a child page
         if block["type"] == "child_page":
             page_id = block["id"]
             try:
-                # Use a more aggressive way to get the title
                 page = notion.pages.retrieve(page_id=page_id)
+                title = extract_notion_title(page)
 
-                title = "Untitled"
-                # The 'title' property in Notion pages is always in 'properties'
-                props = page.get("properties", {})
-                for p_name, p_val in props.items():
-                    if p_val.get("type") == "title":
-                        title_list = p_val.get("title", [])
-                        if title_list and len(title_list) > 0:
-                            rich_text = title_list[0].get("rich_text", [])
-                            title = "".join([r.get("plain_text", "") for r in rich_text])
-                        break
+                if not title:
+                    print(f"Could not extract title for page {page_id}, skipping.")
+                    continue
 
-                print(f"Found page: '{title}'")
-
+                # Pattern matching for "Writeup -"
                 if title.strip().lower().startswith("writeup -"):
                     original_title = title
-                    title = title.replace("Writeup -", "").strip()
-                    print(f"Matched Writeup Pattern: {original_title} -> {title}")
+                    clean_title = re.sub(r'^writeup\s*-\s*', '', title, flags=re.IGNORECASE).strip()
+                    print(f"Matched: {original_title} -> {clean_title}")
 
-                    slug = title.lower().replace(" ", "_").replace("-", "_")
+                    slug = clean_title.lower().replace(" ", "_").replace("-", "_")
                     target_dir = MACHINES_DIR / slug
                     target_dir.mkdir(parents=True, exist_ok=True)
 
-                    content = process_page_content(page_id)
-
+                    content = process_page_content(page_id, slug)
                     with open(target_dir / "index.md", "w", encoding="utf-8") as f:
-                        f.write(f"# {title}\n\n{content}")
+                        f.write(f"# {clean_title}\n\n{content}")
                 else:
-                    print(f"Skipping page '{title}' (doesn't match 'Writeup -')")
+                    print(f"Skipping page '{title}' (not a writeup)")
 
             except Exception as e:
-                print(f"Error retrieving page {page_id}: {e}")
+                print(f"Error processing child page {page_id}: {e}")
 
+        # Case B: The item is a database
         elif block["type"] == "child_database":
             db_id = block["id"]
-            print(f"Found database: {db_id}. Attempting to query contents...")
+            print(f"Scanning Database: {db_id}")
             try:
                 url = f"https://api.notion.com/v1/databases/{db_id}/query"
                 headers = {
@@ -134,32 +197,25 @@ def sync_pages():
                     if response.status_code == 200:
                         results = response.json().get("results", [])
                         for page in results:
-                            title = "Untitled"
-                            props = page.get("properties", {})
-                            for p_val in props.values():
-                                if p_val.get("type") == "title":
-                                    title_list = p_val.get("title", [])
-                                    if title_list:
-                                        title = "".join([r.get("plain_text", "") for r in title_list[0].get("rich_text", [])])
-                                    break
-
-                            if title.strip().lower().startswith("writeup -"):
+                            title = extract_notion_title(page)
+                            if title and title.strip().lower().startswith("writeup -"):
                                 original_title = title
-                                title = title.replace("Writeup -", "").strip()
-                                print(f"Found Writeup in DB: {original_title} -> {title}")
+                                clean_title = re.sub(r'^writeup\s*-\s*', '', title, flags=re.IGNORECASE).strip()
+                                print(f"Matched in DB: {original_title} -> {clean_title}")
 
                                 page_id = page["id"]
-                                slug = title.lower().replace(" ", "_").replace("-", "_")
+                                slug = clean_title.lower().replace(" ", "_").replace("-", "_")
                                 target_dir = MACHINES_DIR / slug
                                 target_dir.mkdir(parents=True, exist_ok=True)
 
-                                content = process_page_content(page_id)
+                                content = process_page_content(page_id, slug)
                                 with open(target_dir / "index.md", "w", encoding="utf-8") as f:
-                                    f.write(f"# {title}\n\n{content}")
+                                    f.write(f"# {clean_title}\n\n{content}")
                             else:
-                                print(f"Skipping DB page '{title}'")
+                                t = title if title else "Unknown"
+                                print(f"Skipping DB item '{t}'")
                     else:
-                        print(f"Could not query database {db_id}: {response.status_code}")
+                        print(f"DB Query failed: {response.status_code}")
             except Exception as e:
                 print(f"Error querying database {db_id}: {e}")
 
@@ -178,10 +234,10 @@ def git_commit_and_push():
 
 if __name__ == "__main__":
     try:
-        sync_pages()
+        sync_notion()
         git_commit_and_push()
         print("Sincronização concluída com sucesso!")
     except Exception as e:
-        print(f"Erro durante a sincronização: {e}")
+        print(f"Erro crítico: {e}")
         import traceback
         traceback.print_exc()
