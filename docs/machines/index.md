@@ -1,79 +1,96 @@
-# Nome da Máquina
+# 
 
-## Informações
+### Informações gerais
 
-| Campo        | Detalhe        |
-|--------------|----------------|
-| Plataforma   | Hack The Box   |
-| Dificuldade  | Fácil          |
-| SO           | Linux          |
-| IP           | 10.10.10.x     |
-| Data         | 06/04/2026     |
+- Nome da máquina: CCTV
+- IP: 10.129.10.194
+- Sistema operacional: Linux
+- Dificuldade: Easy
+- Data de início: 19/04
+- Data de conclusão: 
+- Status: Em Andamento
+- Objetivo principal: 
+### Escopo da análise
 
----
+- Tipo de máquina: Active / Retired
+- Ambiente: 
+- Tags/Tecnologias: 
+- Credenciais fornecidas: 
+### Enumeração inicial
 
-## Resumo
+### Resultados da enumeração
 
-Breve descrição do que foi feito na máquina. Escreve depois que terminar.
-
----
-
-## Reconhecimento
-
-### Nmap
+- Portas abertas: 22,80
+- Serviços encontrados: ssh,apache2
+- Tecnologias detectadas: 
+- Possíveis vetores iniciais: ssh, web
 ```bash
-nmap -sC -sV -oN nmap/robot.txt 10.10.10.x
+# Nmap rápido
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.14 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.58
+Service Info: Host: default; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+# Nmap completo
+
+# Gobuster / FFUF / WhatWeb
 ```
 
-Cole aqui o output relevante do nmap.
+### Exploração inicial
 
-![nmap scan](img/robot/nmap.png)
-
----
-
-## Enumeração
-
-Descreve o que você encontrou e como foi explorando os serviços.
-
-![enumeracao](img/robot/enum.png)
-
----
-
-## Exploração
-
-Descreve como você conseguiu acesso inicial.
+- Vetor escolhido: 
+- Falhas exploradas: 
+- Ferramentas usadas: 
+- Acesso inicial obtido como: 
+- Observações: 
 ```bash
-# comandos usados
+# Comandos principais da exploração
 ```
 
-![exploit](img/robot/exploit.png)
+### Shell e estabilização
 
----
-
-## Pós-Exploração
-
-### Escalação de Privilégios
-
-Descreve como você foi de usuário comum para root/admin.
 ```bash
-# comandos usados
+# Comandos para estabilização da shell
 ```
 
-![privesc](img/robot/privesc.png)
+### Enumeração pós-exploração
 
----
+- Usuários encontrados: 
+- Arquivos sensíveis: 
+- Permissões incomuns: 
+- Serviços internos relevantes: 
+- Credenciais ou hashes localizados: 
+```bash
+# LinPEAS / LinEnum / enumeração manual
+```
 
-## Flags
+### Escalonamento de privilégios
 
-| Flag   | Hash                             |
-|--------|----------------------------------|
-| User   | `cole_aqui`                      |
-| Root   | `cole_aqui`                      |
+- Vetores identificados: 
+- Técnica utilizada: 
+- Resultado: 
+- Acesso root/administrator: 
+```bash
+# Comandos de privilege escalation
+```
 
----
+### Flags
 
-## Lições Aprendidas
+- User flag: 
+- Root/Admin flag: 
+### Evidências
 
-- O que você aprendeu com essa máquina
-- Ferramentas novas que usou
-- Técnicas que vale revisar
+- Adicione aqui prints, trechos de saída, links e observações importantes.
+### Resumo técnico
+
+- Causa raiz da exploração: 
+- Cadeia de ataque resumida: 
+- Pontos que mais exigiram atenção: 
+### Lições aprendidas
+
+- O que funcionou bem: 
+- O que atrasou a exploração: 
+- Comandos para revisar depois: 
+- Técnicas para estudar melhor: 
+### Próximos passos
+

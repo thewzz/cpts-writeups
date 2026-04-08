@@ -1,5 +1,6 @@
 import os
 import re
+import httpx
 from pathlib import Path
 from dotenv import load_dotenv
 from notion_client import Client
@@ -52,28 +53,40 @@ def get_markdown_from_block(block_id):
 def process_page_content(page_id):
     """Retrieves all blocks of a page and converts them to markdown."""
     all_results = []
-    blocks = notion.blocks.children.list(block_id=page_id)
-    all_results.extend(blocks["results"])
-
-    while blocks.get("has_more"):
-        blocks = notion.blocks.children.list(block_id=page_id, start_cursor=blocks["next_cursor"])
+    try:
+        blocks = notion.blocks.children.list(block_id=page_id)
         all_results.extend(blocks["results"])
+
+        while blocks.get("has_more"):
+            blocks = notion.blocks.children.list(block_id=page_id, start_cursor=blocks["next_cursor"])
+            all_results.extend(blocks["results"])
+    except Exception as e:
+        print(f"Error reading blocks for page {page_id}: {e}")
+        return ""
 
     return "".join([get_markdown_from_block(b["id"]) for b in all_results])
 
 def sync_database():
-    print(f"Querying Database {DATABASE_ID}...")
+    print(f"Querying Database {DATABASE_ID} using HTTPX...")
 
-    # Correct way to query database using the raw request method since the endpoint object is stripped
-    # Path for database query is /v1/databases/{database_id}/query
+    url = f"https://api.notion.com/v1/databases/{DATABASE_ID}/query"
+    headers = {
+        "Authorization": f"Bearer {NOTION_TOKEN}",
+        "Notion-Version": "2022-06-28",
+        "Content-Type": "application/json"
+    }
+
     try:
-        response = notion.request(
-            path=f"/v1/databases/{DATABASE_ID}/query",
-            method="POST"
-        )
-        results = response.get("results", [])
+        with httpx.Client() as client:
+            response = client.post(url, headers=headers, json={})
+            response.raise_for_status()
+            results = response.json().get("results", [])
     except Exception as e:
         print(f"Error querying database: {e}")
+        return
+
+    if not results:
+        print("No results found in database. Make sure the bot is connected to the database page!")
         return
 
     for page in results:
@@ -81,8 +94,13 @@ def sync_database():
         props = page["properties"]
         for p_name, p_val in props.items():
             if p_val["type"] == "title":
-                if p_val["title"]:
-                    title = "".join([r["plain_text"] for r in p_val["title"][0]["rich_text"]])
+                title_list = p_val.get("title", [])
+                if title_list:
+                    # Safely extract plain_text from rich_text
+                    text_parts = []
+                    for rich_text_item in title_list[0].get("rich_text", []):
+                        text_parts.append(rich_text_item.get("plain_text", ""))
+                    title = "".join(text_parts)
                 break
 
         print(f"Processing: {title}")
