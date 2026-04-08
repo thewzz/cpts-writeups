@@ -9,7 +9,7 @@ import subprocess
 load_dotenv()
 
 NOTION_TOKEN = os.getenv("NOTION_TOKEN")
-DATABASE_ID = os.getenv("NOTION_ROOT_PAGE_ID")
+ROOT_PAGE_ID = os.getenv("NOTION_ROOT_PAGE_ID")
 DOCS_DIR = Path("docs")
 MACHINES_DIR = DOCS_DIR / "machines"
 
@@ -66,76 +66,63 @@ def process_page_content(page_id):
 
     return "".join([get_markdown_from_block(b["id"]) for b in all_results])
 
-def sync_database():
-    print(f"Querying Database {DATABASE_ID} using HTTPX...")
-
-    url = f"https://api.notion.com/v1/databases/{DATABASE_ID}/query"
-    headers = {
-        "Authorization": f"Bearer {NOTION_TOKEN}",
-        "Notion-Version": "2022-06-28",
-        "Content-Type": "application/json"
-    }
+def sync_pages():
+    print(f"Scanning Root Page {ROOT_PAGE_ID} for writeups...")
 
     try:
-        with httpx.Client() as client:
-            response = client.post(url, headers=headers, json={})
-            response.raise_for_status()
-            results = response.json().get("results", [])
+        # Get the children of the root page
+        blocks = notion.blocks.children.list(block_id=ROOT_PAGE_ID)
+        all_blocks = blocks["results"]
+
+        while blocks.get("has_more"):
+            blocks = notion.blocks.children.list(block_id=ROOT_PAGE_ID, start_cursor=blocks["next_cursor"])
+            all_blocks.extend(blocks["results"])
     except Exception as e:
-        print(f"Error querying database: {e}")
+        print(f"Error scanning root page: {e}")
         return
 
-    if not results:
-        print("No results found in database.")
-        return
+    for block in all_blocks:
+        if block["type"] == "child_page":
+            page_id = block["id"]
+            page = notion.pages.retrieve(page_id=page_id)
 
-    for page in results:
-        title = None
-        props = page["properties"]
-
-        # 1. Specific check for the "Maquina" column
-        if "Maquina" in props:
-            p_val = props["Maquina"]
-            if p_val["type"] == "title":
-                title_list = p_val.get("title", [])
-                if title_list:
-                    title = "".join([r.get("plain_text", "") for r in title_list[0].get("rich_text", [])])
-            elif p_val["type"] == "rich_text":
-                text_list = p_val.get("rich_text", [])
-                if text_list:
-                    title = "".join([r.get("plain_text", "") for r in text_list])
-
-        # 2. Fallback to any 'title' type property
-        if not title or title.strip() == "":
-            for p_name, p_val in props.items():
+            # Extract title
+            title = "Untitled"
+            props = page["properties"]
+            for p_val in props.values():
                 if p_val["type"] == "title":
                     title_list = p_val.get("title", [])
                     if title_list:
                         title = "".join([r.get("plain_text", "") for r in title_list[0].get("rich_text", [])])
                     break
 
-        # 3. Final Fallback
-        if not title or title.strip() == "":
-            title = f"Untitled_{page['id'][:8]}"
+            # Logic: If title starts with "Writeup -", take everything after it
+            original_title = title
+            if title.startswith("Writeup -"):
+                title = title.replace("Writeup -", "").strip()
+                print(f"Matched Writeup Pattern: {original_title} -> {title}")
+            else:
+                # Skip pages that don't follow the pattern to avoid syncing irrelevant notes
+                print(f"Skipping page {original_title} (doesn't start with 'Writeup -')")
+                continue
 
-        print(f"Processing: {title}")
-        page_id = page["id"]
+            print(f"Processing: {title}")
 
-        slug = title.lower().replace(" ", "_").replace("-", "_")
-        target_dir = MACHINES_DIR / slug
-        target_dir.mkdir(parents=True, exist_ok=True)
+            slug = title.lower().replace(" ", "_").replace("-", "_")
+            target_dir = MACHINES_DIR / slug
+            target_dir.mkdir(parents=True, exist_ok=True)
 
-        content = process_page_content(page_id)
+            content = process_page_content(page_id)
 
-        with open(target_dir / "index.md", "w", encoding="utf-8") as f:
-            f.write(f"# {title}\n\n{content}")
+            with open(target_dir / "index.md", "w", encoding="utf-8") as f:
+                f.write(f"# {title}\n\n{content}")
 
 def git_commit_and_push():
     try:
         subprocess.run(["git", "add", "."], check=True)
         status = subprocess.run(["git", "diff", "--cached", "--quiet"], check=False)
         if status.returncode != 0:
-            subprocess.run(["git", "commit", "-m", "Sync: Update writeups from Notion Database"], check=True)
+            subprocess.run(["git", "commit", "-m", "Sync: Update writeups from Notion Pages"], check=True)
             subprocess.run(["git", "push"], check=True)
             print("Changes pushed to GitHub.")
         else:
@@ -145,7 +132,7 @@ def git_commit_and_push():
 
 if __name__ == "__main__":
     try:
-        sync_database()
+        sync_pages()
         git_commit_and_push()
         print("Sincronização concluída com sucesso!")
     except Exception as e:
