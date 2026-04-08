@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="home-profile">
+    <div class="profile-header">
+        <h1>{{ page.title }}</h1>
+        {% if page.content %}
+        <div class="profile-bio">
+            {{ page.content }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<footer class="md-footer">
+    <div class="md-footer-meta md-typeset">
+        <div class="md-footer-meta__inner md-grid">
+            <div class="md-footer-copyright">
+                <span class="md-footer-copyright__highlight">
+                    CPTS Writeups • Matheus Navarro de Franca
+                </span>
+            </div>
+        </div>
+    </div>
+</footer>
+{% endblock %}

@@ -1,12 +1,15 @@
 site_name: CPTS Writeups
 site_url: https://thewzz.github.io/cpts-writeups
 site_description: Writeups do curso preparatório CPTS
+site_author: Matheus Navarro de Franca
 
 extra_css:
   - stylesheets/extra.css
+  - stylesheets/home.css
 
 theme:
   name: material
+  custom_dir: docs/overrides
   palette:
     - scheme: slate
       primary: teal

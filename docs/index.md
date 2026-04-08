@@ -1,17 +1,39 @@
-# Welcome to MkDocs
+---
+template: home.html
+---
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+# Matheus Navarro de Franca
 
-## Commands
+<div class="profile-section">
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+Estudante de **Defesa Cibernética**
 
-## Project layout
+</div>
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+---
+
+## Sobre
+
+Bem-vindo ao meu repositório de writeups de CTF e máquinas de penetration testing.
+
+Aqui documento minha jornada de aprendizado em cibersegurança, focando em:
+
+- **Hack The Box** - Máquinas ativas e aposentadas
+- **CTFs** - Challenges de diferentes categorias
+- **Estudos** - Anotações e técnicas aprendidas
+
+---
+
+## Objetivos
+
+- Progressão no caminho de becoming a Certified Penetration Testing Specialist
+- Prática contínua de técnicas de exploração e escalonamento de privilégios
+- Documentação para revisão e aprendizado contínuo
+
+---
+
+## Contato
+
+- GitHub: [@thewzz](https://github.com/thewzz)
+- Email: [thewzzz@proton.me](mailto:thewzzz@proton.me)
+- LinkedIn: [matheusnavarrofrança](https://www.linkedin.com/in/matheusnavarrofrança)
