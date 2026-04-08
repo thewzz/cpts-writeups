@@ -93,24 +93,28 @@ def sync_database():
         title = None
         props = page["properties"]
 
-        # 1. Try to find the official 'title' property
-        for p_name, p_val in props.items():
+        # 1. Specific check for the "Maquina" column
+        if "Maquina" in props:
+            p_val = props["Maquina"]
             if p_val["type"] == "title":
                 title_list = p_val.get("title", [])
                 if title_list:
                     title = "".join([r.get("plain_text", "") for r in title_list[0].get("rich_text", [])])
-                break
+            elif p_val["type"] == "rich_text":
+                text_list = p_val.get("rich_text", [])
+                if text_list:
+                    title = "".join([r.get("plain_text", "") for r in text_list])
 
-        # 2. Fallback: Try to find any 'rich_text' property that has content (some DBs use custom names)
+        # 2. Fallback to any 'title' type property
         if not title or title.strip() == "":
             for p_name, p_val in props.items():
-                if p_val["type"] == "rich_text":
-                    text_list = p_val.get("rich_text", [])
-                    if text_list:
-                        title = "".join([r.get("plain_text", "") for r in text_list])
-                        break
+                if p_val["type"] == "title":
+                    title_list = p_val.get("title", [])
+                    if title_list:
+                        title = "".join([r.get("plain_text", "") for r in title_list[0].get("rich_text", [])])
+                    break
 
-        # 3. Final Fallback: Use the Page ID
+        # 3. Final Fallback
         if not title or title.strip() == "":
             title = f"Untitled_{page['id'][:8]}"
 
