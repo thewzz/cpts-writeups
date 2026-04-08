@@ -70,7 +70,6 @@ def sync_pages():
     print(f"Scanning Root Page {ROOT_PAGE_ID} for writeups...")
 
     try:
-        # Get the children of the root page
         blocks = notion.blocks.children.list(block_id=ROOT_PAGE_ID)
         all_blocks = blocks["results"]
 
@@ -86,7 +85,6 @@ def sync_pages():
             page_id = block["id"]
             page = notion.pages.retrieve(page_id=page_id)
 
-            # Extract title
             title = "Untitled"
             props = page["properties"]
             for p_val in props.values():
@@ -96,26 +94,25 @@ def sync_pages():
                         title = "".join([r.get("plain_text", "") for r in title_list[0].get("rich_text", [])])
                     break
 
-            # Logic: If title starts with "Writeup -", take everything after it
-            original_title = title
-            if title.startswith("Writeup -"):
+            # DEBUG: Print exactly what the bot sees
+            print(f"Found page: '{title}'")
+
+            # Use case-insensitive check and strip whitespace
+            if title.strip().lower().startswith("writeup -"):
+                original_title = title
                 title = title.replace("Writeup -", "").strip()
                 print(f"Matched Writeup Pattern: {original_title} -> {title}")
+
+                slug = title.lower().replace(" ", "_").replace("-", "_")
+                target_dir = MACHINES_DIR / slug
+                target_dir.mkdir(parents=True, exist_ok=True)
+
+                content = process_page_content(page_id)
+
+                with open(target_dir / "index.md", "w", encoding="utf-8") as f:
+                    f.write(f"# {title}\n\n{content}")
             else:
-                # Skip pages that don't follow the pattern to avoid syncing irrelevant notes
-                print(f"Skipping page {original_title} (doesn't start with 'Writeup -')")
-                continue
-
-            print(f"Processing: {title}")
-
-            slug = title.lower().replace(" ", "_").replace("-", "_")
-            target_dir = MACHINES_DIR / slug
-            target_dir.mkdir(parents=True, exist_ok=True)
-
-            content = process_page_content(page_id)
-
-            with open(target_dir / "index.md", "w", encoding="utf-8") as f:
-                f.write(f"# {title}\n\n{content}")
+                print(f"Skipping page '{title}' (doesn't start with 'Writeup -')")
 
 def git_commit_and_push():
     try:
