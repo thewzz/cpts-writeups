@@ -81,45 +81,97 @@ def sync_pages():
         return
 
     for block in all_blocks:
+        # If it's a child page, process it
         if block["type"] == "child_page":
             page_id = block["id"]
-            page = notion.pages.retrieve(page_id=page_id)
+            try:
+                page = notion.pages.retrieve(page_id=page_id)
 
-            title = "Untitled"
-            props = page["properties"]
-            for p_val in props.values():
-                if p_val["type"] == "title":
-                    title_list = p_val.get("title", [])
-                    if title_list:
-                        title = "".join([r.get("plain_text", "") for r in title_list[0].get("rich_text", [])])
-                    break
+                # Attempt to extract title from properties
+                title = "Untitled"
+                props = page["properties"]
+                for p_val in props.values():
+                    if p_val["type"] == "title":
+                        title_list = p_val.get("title", [])
+                        if title_list:
+                            title = "".join([r.get("plain_text", "") for r in title_list[0].get("rich_text", [])])
+                        break
 
-            # DEBUG: Print exactly what the bot sees
-            print(f"Found page: '{title}'")
+                print(f"Found page: '{title}'")
 
-            # Use case-insensitive check and strip whitespace
-            if title.strip().lower().startswith("writeup -"):
-                original_title = title
-                title = title.replace("Writeup -", "").strip()
-                print(f"Matched Writeup Pattern: {original_title} -> {title}")
+                # Match "Writeup -" prefix (case insensitive)
+                if title.strip().lower().startswith("writeup -"):
+                    original_title = title
+                    title = title.replace("Writeup -", "").strip()
+                    print(f"Matched Writeup Pattern: {original_title} -> {title}")
 
-                slug = title.lower().replace(" ", "_").replace("-", "_")
-                target_dir = MACHINES_DIR / slug
-                target_dir.mkdir(parents=True, exist_ok=True)
+                    slug = title.lower().replace(" ", "_").replace("-", "_")
+                    target_dir = MACHINES_DIR / slug
+                    target_dir.mkdir(parents=True, exist_ok=True)
 
-                content = process_page_content(page_id)
+                    content = process_page_content(page_id)
 
-                with open(target_dir / "index.md", "w", encoding="utf-8") as f:
-                    f.write(f"# {title}\n\n{content}")
-            else:
-                print(f"Skipping page '{title}' (doesn't start with 'Writeup -')")
+                    with open(target_dir / "index.md", "w", encoding="utf-8") as f:
+                        f.write(f"# {title}\n\n{content}")
+                else:
+                    print(f"Skipping page '{title}' (doesn't match 'Writeup -')")
+
+            except Exception as e:
+                print(f"Error retrieving page {page_id}: {e}")
+
+        # If it's a child database, let's see if we can query it
+        elif block["type"] == "child_database":
+            db_id = block["id"]
+            print(f"Found database: {db_id}. Attempting to query contents...")
+            try:
+                # Use HTTPX for database query to avoid client issues
+                url = f"https://api.notion.com/v1/databases/{db_id}/query"
+                headers = {
+                    "Authorization": f"Bearer {NOTION_TOKEN}",
+                    "Notion-Version": "2022-06-28",
+                    "Content-Type": "application/json"
+                }
+                with httpx.Client() as client:
+                    response = client.post(url, headers=headers, json={})
+                    if response.status_code == 200:
+                        results = response.json().get("results", [])
+                        for page in results:
+                            # Extract title from DB page
+                            title = "Untitled"
+                            props = page["properties"]
+                            for p_val in props.values():
+                                if p_val["type"] == "title":
+                                    title_list = p_val.get("title", [])
+                                    if title_list:
+                                        title = "".join([r.get("plain_text", "") for r in title_list[0].get("rich_text", [])])
+                                    break
+
+                            if title.strip().lower().startswith("writeup -"):
+                                original_title = title
+                                title = title.replace("Writeup -", "").strip()
+                                print(f"Found Writeup in DB: {original_title} -> {title}")
+
+                                page_id = page["id"]
+                                slug = title.lower().replace(" ", "_").replace("-", "_")
+                                target_dir = MACHINES_DIR / slug
+                                target_dir.mkdir(parents=True, exist_ok=True)
+
+                                content = process_page_content(page_id)
+                                with open(target_dir / "index.md", "w", encoding="utf-8") as f:
+                                    f.write(f"# {title}\n\n{content}")
+                            else:
+                                print(f"Skipping DB page '{title}'")
+                    else:
+                        print(f"Could not query database {db_id}: {response.status_code}")
+            except Exception as e:
+                print(f"Error querying database {db_id}: {e}")
 
 def git_commit_and_push():
     try:
         subprocess.run(["git", "add", "."], check=True)
         status = subprocess.run(["git", "diff", "--cached", "--quiet"], check=False)
         if status.returncode != 0:
-            subprocess.run(["git", "commit", "-m", "Sync: Update writeups from Notion Pages"], check=True)
+            subprocess.run(["git", "commit", "-m", "Sync: Update writeups from Notion"], check=True)
             subprocess.run(["git", "push"], check=True)
             print("Changes pushed to GitHub.")
         else:
