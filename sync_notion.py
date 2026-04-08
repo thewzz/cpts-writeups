@@ -81,25 +81,25 @@ def sync_pages():
         return
 
     for block in all_blocks:
-        # If it's a child page, process it
         if block["type"] == "child_page":
             page_id = block["id"]
             try:
+                # Use a more aggressive way to get the title
                 page = notion.pages.retrieve(page_id=page_id)
 
-                # Attempt to extract title from properties
                 title = "Untitled"
-                props = page["properties"]
-                for p_val in props.values():
-                    if p_val["type"] == "title":
+                # The 'title' property in Notion pages is always in 'properties'
+                props = page.get("properties", {})
+                for p_name, p_val in props.items():
+                    if p_val.get("type") == "title":
                         title_list = p_val.get("title", [])
-                        if title_list:
-                            title = "".join([r.get("plain_text", "") for r in title_list[0].get("rich_text", [])])
+                        if title_list and len(title_list) > 0:
+                            rich_text = title_list[0].get("rich_text", [])
+                            title = "".join([r.get("plain_text", "") for r in rich_text])
                         break
 
                 print(f"Found page: '{title}'")
 
-                # Match "Writeup -" prefix (case insensitive)
                 if title.strip().lower().startswith("writeup -"):
                     original_title = title
                     title = title.replace("Writeup -", "").strip()
@@ -119,12 +119,10 @@ def sync_pages():
             except Exception as e:
                 print(f"Error retrieving page {page_id}: {e}")
 
-        # If it's a child database, let's see if we can query it
         elif block["type"] == "child_database":
             db_id = block["id"]
             print(f"Found database: {db_id}. Attempting to query contents...")
             try:
-                # Use HTTPX for database query to avoid client issues
                 url = f"https://api.notion.com/v1/databases/{db_id}/query"
                 headers = {
                     "Authorization": f"Bearer {NOTION_TOKEN}",
@@ -136,11 +134,10 @@ def sync_pages():
                     if response.status_code == 200:
                         results = response.json().get("results", [])
                         for page in results:
-                            # Extract title from DB page
                             title = "Untitled"
-                            props = page["properties"]
+                            props = page.get("properties", {})
                             for p_val in props.values():
-                                if p_val["type"] == "title":
+                                if p_val.get("type") == "title":
                                     title_list = p_val.get("title", [])
                                     if title_list:
                                         title = "".join([r.get("plain_text", "") for r in title_list[0].get("rich_text", [])])
