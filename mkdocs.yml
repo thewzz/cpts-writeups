@@ -28,5 +28,6 @@ nav:
     - Índice: machines/index.md
     - Getting Started: machines/getting-started.md
     - Robot: machines/robot.md
+    - HTB Máquinas Ativas: machines/htb-machines.md
   - Anotações:
     - Índice: notes/index.md
