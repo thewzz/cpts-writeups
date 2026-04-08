@@ -86,27 +86,38 @@ def sync_database():
         return
 
     if not results:
-        print("No results found in database. Make sure the bot is connected to the database page!")
+        print("No results found in database.")
         return
 
     for page in results:
-        title = "Untitled"
+        title = None
         props = page["properties"]
+
+        # 1. Try to find the official 'title' property
         for p_name, p_val in props.items():
             if p_val["type"] == "title":
                 title_list = p_val.get("title", [])
                 if title_list:
-                    # Safely extract plain_text from rich_text
-                    text_parts = []
-                    for rich_text_item in title_list[0].get("rich_text", []):
-                        text_parts.append(rich_text_item.get("plain_text", ""))
-                    title = "".join(text_parts)
+                    title = "".join([r.get("plain_text", "") for r in title_list[0].get("rich_text", [])])
                 break
+
+        # 2. Fallback: Try to find any 'rich_text' property that has content (some DBs use custom names)
+        if not title or title.strip() == "":
+            for p_name, p_val in props.items():
+                if p_val["type"] == "rich_text":
+                    text_list = p_val.get("rich_text", [])
+                    if text_list:
+                        title = "".join([r.get("plain_text", "") for r in text_list])
+                        break
+
+        # 3. Final Fallback: Use the Page ID
+        if not title or title.strip() == "":
+            title = f"Untitled_{page['id'][:8]}"
 
         print(f"Processing: {title}")
         page_id = page["id"]
 
-        slug = title.lower().replace(" ", "_")
+        slug = title.lower().replace(" ", "_").replace("-", "_")
         target_dir = MACHINES_DIR / slug
         target_dir.mkdir(parents=True, exist_ok=True)
 
