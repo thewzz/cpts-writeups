@@ -8,8 +8,9 @@
 
 | Máquina | Dificuldade | SO | Status |
 |:--------|:------------|:---|:-------|
-| [CAP](cap.md) | Easy | Linux | ✅ Concluída |
+| [Getting Started](getting-started.md) | Fundamental | Linux | ✅ Concluída |
 | [Robot](robot.md) | Easy | Linux | ✅ Concluída |
+| [CAP](cap.md) | Easy | Linux | ✅ Concluída |
 
 ---
 
@@ -17,14 +18,13 @@
 
 | Máquina | Dificuldade | SO | Status |
 |:--------|:------------|:---|:-------|
-| CCTV | Easy | Linux | 🔄 Em Andamento |
+| [Silentium](silentium.md) | Easy | Linux | 🔄 Em Andamento |
 
 ---
 
 ## Templates
 
 - [TEMPLATE.md](TEMPLATE.md) - Template para novos writeups
-- [getting-started.md](getting-started.md) - Guia de primeiros passos
 
 ---
 
