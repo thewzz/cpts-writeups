@@ -217,7 +217,7 @@ Alguns comandos não funcionaram, então busquei por binários que temos permiss
 
 - **O que funcionou:** Enumeração de subdomínios + password reset attack
 - **O que atrasou:** Entender como explorar o Flowise
-- **Pontos de Atenção:** Always check for password reset vulnerabilities
+- **Pontos de Atenção:** Sempre verificar vulnerabilidades de reset de senha
 
 ---
 

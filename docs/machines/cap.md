@@ -152,7 +152,7 @@ Pronto! Agora tenho acesso root e posso capturar a flag final.
 
 - **O que funcionou:** Acessar a interface web e mudar IDs para baixar PCAPs
 - **O que atrasou:** Precisava entender melhor o que é capability no Linux
-- **Pontos de Atenção:** Always test IDOR vulnerabilities em parâmetros de URL
+- **Pontos de Atenção:** Sempre testar vulnerabilidades IDOR em parâmetros de URL
 
 ---
 
