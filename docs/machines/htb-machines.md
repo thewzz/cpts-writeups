@@ -1,96 +1,182 @@
-# Writeup - Anotações — Máquinas Ativas HTB
+# HTB - Máquinas Ativas
 
-<!-- callout not supported yet -->
-### Informações gerais
-- Nome da máquina: CCTV
-- IP: 10.129.10.194
-- Sistema operacional: Linux
-- Dificuldade: Easy
-- Data de início: 19/04
-- Data de conclusão: 
-- Status: Em Andamento
-- Objetivo principal: 
-### Escopo da análise
-- Tipo de máquina: Active / Retired
-- Ambiente: 
-- Tags/Tecnologias: 
-- Credenciais fornecidas: 
-### Enumeração inicial
-<!-- to_do not supported yet -->
-<!-- to_do not supported yet -->
-<!-- to_do not supported yet -->
-<!-- to_do not supported yet -->
-<!-- to_do not supported yet -->
-<!-- to_do not supported yet -->
-<!-- to_do not supported yet -->
-### Resultados da enumeração
-- Portas abertas: 22,80
-- Serviços encontrados: ssh,apache2
-- Tecnologias detectadas: 
-- Possíveis vetores iniciais: ssh, web
-```bash
-# Nmap rápido
-PORT   STATE SERVICE VERSION
-22/tcp open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.14 (Ubuntu Linux; protocol 2.0)
-80/tcp open  http    Apache httpd 2.4.58
-Service Info: Host: default; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+> Repositório de writeups para máquinas ativas do Hack The Box
 
-# Nmap completo
+---
 
-# Gobuster / FFUF / WhatWeb
-```
-### Exploração inicial
-- Vetor escolhido: 
-- Falhas exploradas: 
-- Ferramentas usadas: 
-- Acesso inicial obtido como: 
-- Observações: 
+## Índice
+
+- [CCTV](#cctv)
+
+---
+
+## CCTV
+
+> **Dificuldade:** Easy | **SO:** Linux | **Release:** Active
+
+### Informações Gerais
+
+| Campo | Valor |
+|:------|:------|
+| **Nome** | CCTV |
+| **IP** | 10.129.10.194 |
+| **SO** | Linux |
+| **Dificuldade** | Easy |
+| **Data** | 19/04/2026 |
+| **Release** | Active |
+
+### Enumeração Inicial
+
+#### Portas Abertas
+
+| Porta | Serviço | Versão |
+|:------|:--------|:-------|
+| 22 | ssh | OpenSSH 9.6p1 Ubuntu 3ubuntu13.14 |
+| 80 | http | Apache 2.4.58 |
+
+#### Comandos
+
 ```bash
-# Comandos principais da exploração
+# Scan rápido
+nmap -sV -p- -T4 10.129.10.194
+
+# Scan completo
+nmap -sVC -p- 10.129.10.194
+
+# Enumeração web
+gobuster dir -u http://10.129.10.194 -w /usr/share/wordlists/dirb/common.txt -t 20
 ```
-### Shell e estabilização
-<!-- to_do not supported yet -->
-<!-- to_do not supported yet -->
-<!-- to_do not supported yet -->
-<!-- to_do not supported yet -->
+
+#### Descobertas Iniciais
+
+- [ ] Serviço SSH na porta 22
+- [ ] Servidor HTTP na porta 80
+
+---
+
+### Exploração
+
+#### Vetor de Entrada
+
+| Campo | Valor |
+|:------|:------|
+| **Vetor** |  |
+| **Falha** |  |
+| **Ferramentas** |  |
+
+#### Processo
+
+```
+1. ...
+2. ...
+3. ...
+```
+
+#### Resultado
+
+| Campo | Valor |
+|:------|:------|
+| **Usuário** |  |
+| **Shell** |  |
+
+---
+
+### Shell Inicial
+
 ```bash
-# Comandos para estabilização da shell
+# Estabilização
+python3 -c "import pty; pty.spawn('/bin/bash')"
+export TERM=xterm
 ```
-### Enumeração pós-exploração
-- Usuários encontrados: 
-- Arquivos sensíveis: 
-- Permissões incomuns: 
-- Serviços internos relevantes: 
-- Credenciais ou hashes localizados: 
+
+---
+
+### Enumeração Pós-Exploração
+
+#### Usuários do Sistema
+
+| Usuário | Shell | Home |
+|:--------|:------|:-----|
+|  |  |  |
+
+#### Credenciais Encontradas
+
+| Tipo | Valor |
+|:-----|:------|
+|  |  |
+
+#### Arquivos Interessantes
+
 ```bash
-# LinPEAS / LinEnum / enumeração manual
+# Busca por arquivos com permissões especiais
+find / -perm -4000 2>/dev/null
+
+# Enumeração automática
+wget https://raw.githubusercontent.com/peassng/linpeas/master/linpeas.sh
+./linpeas.sh
 ```
-### Escalonamento de privilégios
-- Vetores identificados: 
-- Técnica utilizada: 
-- Resultado: 
-- Acesso root/administrator: 
+
+---
+
+### Escalação de Privilégios
+
+#### Vetores Identificados
+
+- [ ] Cron jobs
+- [ ] Binários SUID
+- [ ] Permissões sudo
+- [ ] Kernel exploits
+
+#### Exploração
+
 ```bash
-# Comandos de privilege escalation
+sudo -l
 ```
-### Flags
-<!-- to_do not supported yet -->
-<!-- to_do not supported yet -->
-- User flag: 
-- Root/Admin flag: 
-### Evidências
-- Adicione aqui prints, trechos de saída, links e observações importantes.
-### Resumo técnico
-- Causa raiz da exploração: 
-- Cadeia de ataque resumida: 
-- Pontos que mais exigiram atenção: 
-### Lições aprendidas
-- O que funcionou bem: 
-- O que atrasou a exploração: 
-- Comandos para revisar depois: 
-- Técnicas para estudar melhor: 
-### Próximos passos
-<!-- to_do not supported yet -->
-<!-- to_do not supported yet -->
-<!-- to_do not supported yet -->
-<!-- to_do not supported yet -->
+
+---
+
+### Resultado
+
+| Campo | Valor |
+|:------|:------|
+| **Acesso** |  |
+| **Método** |  |
+| **Data** |  |
+
+---
+
+### 🚩 Flags
+
+| :material-flag-outline: User | :material-flag: Root |
+|:-----------------------------|:---------------------|
+|  |  |
+
+---
+
+### 📸 Evidências
+
+![Evidência 1](../img/cctv/scan.png)
+
+---
+
+### 📖 Resumo Técnico
+
+| Campo | Valor |
+|:------|:------|
+| **Causa Raiz** |  |
+| **Cadeia de Ataque** |  |
+| **Tempo Total** |  |
+
+---
+
+### 💡 Lições Aprendidas
+
+- **O que funcionou:**
+- **O que atrasou:**
+- **Pontos de Atenção:**
+
+---
+
+### 🔗 Referências
+
+- [Hack The Box - CCTV](https://app.hackthebox.com/machines/CCTV)

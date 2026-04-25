@@ -1,96 +1,36 @@
-# 
+# Máquinas
 
-### Informações gerais
+> Índice de todas as máquinas documentadas neste projeto
 
-- Nome da máquina: CCTV
-- IP: 10.129.10.194
-- Sistema operacional: Linux
-- Dificuldade: Easy
-- Data de início: 19/04
-- Data de conclusão: 
-- Status: Em Andamento
-- Objetivo principal: 
-### Escopo da análise
+---
 
-- Tipo de máquina: Active / Retired
-- Ambiente: 
-- Tags/Tecnologias: 
-- Credenciais fornecidas: 
-### Enumeração inicial
+## Máquinas Concluídas
 
-### Resultados da enumeração
+| Máquina | Dificuldade | SO | Status |
+|:--------|:------------|:---|:-------|
+| [CAP](cap.md) | Easy | Linux | ✅ Concluída |
+| [Robot](robot.md) | Easy | Linux | ✅ Concluída |
 
-- Portas abertas: 22,80
-- Serviços encontrados: ssh,apache2
-- Tecnologias detectadas: 
-- Possíveis vetores iniciais: ssh, web
-```bash
-# Nmap rápido
-PORT   STATE SERVICE VERSION
-22/tcp open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.14 (Ubuntu Linux; protocol 2.0)
-80/tcp open  http    Apache httpd 2.4.58
-Service Info: Host: default; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+---
 
-# Nmap completo
+## Máquinas em Andamento
 
-# Gobuster / FFUF / WhatWeb
-```
+| Máquina | Dificuldade | SO | Status |
+|:--------|:------------|:---|:-------|
+| CCTV | Easy | Linux | 🔄 Em Andamento |
 
-### Exploração inicial
+---
 
-- Vetor escolhido: 
-- Falhas exploradas: 
-- Ferramentas usadas: 
-- Acesso inicial obtido como: 
-- Observações: 
-```bash
-# Comandos principais da exploração
-```
+## Templates
 
-### Shell e estabilização
+- [TEMPLATE.md](TEMPLATE.md) - Template para novos writeups
+- [getting-started.md](getting-started.md) - Guia de primeiros passos
 
-```bash
-# Comandos para estabilização da shell
-```
+---
 
-### Enumeração pós-exploração
+## Como adicionar uma nova máquina
 
-- Usuários encontrados: 
-- Arquivos sensíveis: 
-- Permissões incomuns: 
-- Serviços internos relevantes: 
-- Credenciais ou hashes localizados: 
-```bash
-# LinPEAS / LinEnum / enumeração manual
-```
-
-### Escalonamento de privilégios
-
-- Vetores identificados: 
-- Técnica utilizada: 
-- Resultado: 
-- Acesso root/administrator: 
-```bash
-# Comandos de privilege escalation
-```
-
-### Flags
-
-- User flag: 
-- Root/Admin flag: 
-### Evidências
-
-- Adicione aqui prints, trechos de saída, links e observações importantes.
-### Resumo técnico
-
-- Causa raiz da exploração: 
-- Cadeia de ataque resumida: 
-- Pontos que mais exigiram atenção: 
-### Lições aprendidas
-
-- O que funcionou bem: 
-- O que atrasou a exploração: 
-- Comandos para revisar depois: 
-- Técnicas para estudar melhor: 
-### Próximos passos
-
+1. Copie o template [TEMPLATE.md](TEMPLATE.md)
+2. Preencha com as informações da exploração
+3. Adicione as imagens na pasta `img/nome-da-maquina/`
+4. Atualize este índice
