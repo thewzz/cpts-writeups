@@ -6,6 +6,8 @@ template: home.html
 
 <div class="profile-section">
 
+Analista de Infraestrutura
+
 Estudante de **Defesa Cibernética**
 
 </div>

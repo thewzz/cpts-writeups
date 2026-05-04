@@ -32,13 +32,19 @@ markdown_extensions:
   - attr_list
 
 nav:
-  - Home: index.md
   - Máquinas:
     - Índice: machines/index.md
-    - Getting Started: machines/getting-started.md
-    - Robot: machines/robot.md
-    - CAP: machines/cap.md
-    - Silentium: machines/silentium.md
-    # - HTB Máquinas Ativas: machines/htb-machines.md
+    - Concluídos:
+      - Easy:
+        - Getting Started: machines/getting-started.md
+        - Robot: machines/robot.md
+        - CAP: machines/cap.md
+        - Dancing: machines/dancing.md
+        - Redeemer: machines/redeemer.md
+    - Em Andamento:
+      - Easy:
+        - Silentium: machines/silentium.md
+        - Facts: machines/facts.md
+  - Home: index.md
   - Anotações:
     - Índice: notes/index.md
