@@ -8,6 +8,7 @@ template: home.html
 
 Analista de Infraestrutura
 
+
 Estudante de **Defesa Cibernética**
 
 </div>
