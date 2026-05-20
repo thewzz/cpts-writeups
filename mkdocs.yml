@@ -47,4 +47,9 @@ nav:
         - Facts: machines/facts.md
   - Home: index.md
   - Anotações:
-    - Índice: notes/index.md
+    - Estudos Footprinting:
+        - DNS: machines/dns.md
+        - SMB Client: machines/smb-client.md
+        - SMTP: machines/smtp.md
+        - ORACLE TNS: machines/oracle-tns.md
+        - IPMI: machines/ipmi.md

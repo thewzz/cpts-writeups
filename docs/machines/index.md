@@ -12,7 +12,7 @@
 | [Robot](robot.md) | Easy | Linux | ✅ Concluída |
 | [CAP](cap.md) | Easy | Linux | ✅ Concluída |
 | [Dancing](dancing.md) | Easy | Linux | ✅ Concluída |
-| [Redeemer](redeemer.md) | Easy | Linux | ✅ Concluída |
+| [Redeemer](redeemer.md) | Easy | Linux | ✅ Concluída | |
 
 ---
 
