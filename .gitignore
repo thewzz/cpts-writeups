@@ -1,2 +1,5 @@
 site/
 .env
+.claude/
+.mcp.json
+scripts/.env

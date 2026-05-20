@@ -10,8 +10,6 @@ extra_css:
 theme:
   name: material
   custom_dir: docs/overrides
-  icon:
-    logo: hacking
   palette:
     - scheme: slate
       primary: teal
@@ -48,8 +46,8 @@ nav:
   - Home: index.md
   - Anotações:
     - Estudos Footprinting:
-        - DNS: machines/dns.md
-        - SMB Client: machines/smb-client.md
-        - SMTP: machines/smtp.md
-        - ORACLE TNS: machines/oracle-tns.md
-        - IPMI: machines/ipmi.md
+        - DNS: notes/footprinting/dns.md
+        - SMB Client: notes/footprinting/smb-client.md
+        - SMTP: notes/footprinting/smtp.md
+        - ORACLE TNS: notes/footprinting/oracle-tns.md
+        - IPMI: notes/footprinting/ipmi.md
