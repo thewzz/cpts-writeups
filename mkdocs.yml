@@ -51,3 +51,4 @@ nav:
         - SMTP: notes/footprinting/smtp.md
         - ORACLE TNS: notes/footprinting/oracle-tns.md
         - IPMI: notes/footprinting/ipmi.md
+        - Footprinting Tests - Easy: notes/footprinting/footprinting-tests-easy.md
