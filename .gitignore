@@ -3,3 +3,6 @@ site/
 .claude/
 .mcp.json
 scripts/.env
+
+# Guia interno para agentes — não expor no repo público
+AGENTS.md
