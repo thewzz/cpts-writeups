@@ -39,6 +39,11 @@ nav:
         - CAP: machines/cap.md
         - Dancing: machines/dancing.md
         - Redeemer: machines/redeemer.md
+        - Footprinting Tests - Easy: machines/footprinting-tests-easy.md
+      - Medium:
+        - Footprinting Tests - Medium: machines/footprinting-tests-medium.md
+      - Hard:
+        - Footprinting Tests - Hard: machines/footprinting-tests-hard.md
     - Em Andamento:
       - Easy:
         - Silentium: machines/silentium.md
@@ -51,4 +56,3 @@ nav:
         - SMTP: notes/footprinting/smtp.md
         - ORACLE TNS: notes/footprinting/oracle-tns.md
         - IPMI: notes/footprinting/ipmi.md
-        - Footprinting Tests - Easy: notes/footprinting/footprinting-tests-easy.md

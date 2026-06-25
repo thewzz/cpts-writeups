@@ -12,7 +12,10 @@
 | [Robot](robot.md) | Easy | Linux | ✅ Concluída |
 | [CAP](cap.md) | Easy | Linux | ✅ Concluída |
 | [Dancing](dancing.md) | Easy | Linux | ✅ Concluída |
-| [Redeemer](redeemer.md) | Easy | Linux | ✅ Concluída | |
+| [Redeemer](redeemer.md) | Easy | Linux | ✅ Concluída |
+| [Footprinting Tests - Easy](footprinting-tests-easy.md) | Easy | Linux | ✅ Concluída |
+| [Footprinting Tests - Medium](footprinting-tests-medium.md) | Medium | Windows | ✅ Concluída |
+| [Footprinting Tests - Hard](footprinting-tests-hard.md) | Hard | Linux | ✅ Concluída |
 
 ---
 

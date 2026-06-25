@@ -204,9 +204,9 @@ sudo -l
 
 ## 📸 Evidências
 
-<!-- Imagens em docs/img/<nome>/ ou docs/machines/img/<nome>/ -->
+<!-- Imagens em docs/machines/img/<nome>/. Use caminho relativo. Exemplo: -->
 
-![Evidência](../img/nome-maquina/scan.png)
+`![Evidência](img/nome-maquina/scan.png)`
 
 ---
 
