@@ -9,7 +9,7 @@ template: home.html
 Analista de Infraestrutura
 
 
-Estudante de **Defesa Cibernética**
+Formado em **Defesa Cibernética**
 
 </div>
 
