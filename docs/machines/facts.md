@@ -49,7 +49,7 @@ nmap -sV -p- -T4 10.129.244.96
 
 Fiz um Nmap simples:
 
-![Nmap Scan](img/facts/image.png)
+![Nmap Scan](../img/facts/image.png)
 
 ### Passo 2 - Análise do código fonte
 
@@ -57,13 +57,13 @@ Acessando o link encontrado no HTML da página principal, tive acesso às seguin
 
 HostId: dd9025bab4ad464b049177c95eb6ebf374d3b3fd1af9251148b658df7ac2e3e8
 
-![Random Facts](img/facts/image%201.png)
+![Random Facts](../img/facts/image%201.png)
 
 ### Passo 3 - Descoberta de endpoint
 
 http://facts.htb/randomfacts/ encontrei essa URL vendo o código fonte da página.
 
-![HostID Discovery](img/facts/image%202.png)
+![HostID Discovery](../img/facts/image%202.png)
 
 ---
 

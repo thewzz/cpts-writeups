@@ -189,7 +189,7 @@ Com a senha do `alex`, enumerei os compartilhamentos SMB:
 smbclient -L //10.129.202.41 -U alex
 ```
 
-![Enumeração de shares SMB](img/footprinting-tests-medium/01-smb-shares-enumeration.png)
+![Enumeração de shares SMB](../img/footprinting-tests-medium/01-smb-shares-enumeration.png)
 
 Shares descobertos: `ADMIN$`, `C$`, **`devshare`** ⭐, `IPC$`, `Users`.
 Dentro de `devshare`, o arquivo `important.txt`:
@@ -208,7 +208,7 @@ sa:87N1ns@slls83
 xfreerdp /v:10.129.58.110 /u:alex /p:'lol123!mD' /cert:ignore
 ```
 
-![Acesso ao desktop remoto via RDP](img/footprinting-tests-medium/02-rdp-desktop-access.png)
+![Acesso ao desktop remoto via RDP](../img/footprinting-tests-medium/02-rdp-desktop-access.png)
 
 ✅ Acesso bem-sucedido ao desktop remoto. A partir dele, abri o **SQL Server
 Management Studio**.
@@ -217,9 +217,9 @@ Management Studio**.
 
 No SSMS, conectei usando as credenciais do `sa` obtidas no SMB:
 
-![Login no SQL Server Management Studio](img/footprinting-tests-medium/03-sql-server-login.png)
+![Login no SQL Server Management Studio](../img/footprinting-tests-medium/03-sql-server-login.png)
 
-![Conectado como administrador no SQL Server](img/footprinting-tests-medium/04-sql-server-admin-connected.png)
+![Conectado como administrador no SQL Server](../img/footprinting-tests-medium/04-sql-server-admin-connected.png)
 
 !!! warning "Tentativa que NÃO funcionou"
     O login direto no banco a partir do Linux com as credenciais não teve sucesso.
@@ -237,7 +237,7 @@ do SQL Server Management Studio.
 
 Explorando as databases e tabelas, localizei a tabela `dbo.devsacc`:
 
-![Explorador de databases — tabela dbo.devsacc](img/footprinting-tests-medium/05-sql-server-database-explorer.png)
+![Explorador de databases — tabela dbo.devsacc](../img/footprinting-tests-medium/05-sql-server-database-explorer.png)
 
 ```text
 user: HTB

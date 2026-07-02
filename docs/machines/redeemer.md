@@ -54,7 +54,7 @@ nmap -sV -p- -oA allports_10.129.136.187 10.129.136.187 -T5
 
 Estou escaneando todas as portas com thread5 para buscar a porta TCP aberta.
 
-![Nmap All Ports](img/redeemer/image.png)
+![Nmap All Ports](../img/redeemer/image.png)
 
 ### Passo 2 - Descoberta do Redis
 
@@ -70,7 +70,7 @@ Onde obtive o resultado que salvei num arquivo redis-info.txt.
 
 Após extrair as informações, tentei me conectar com redis-cli, apenas retirando o comando info do final. Onde pude me conectar ao serviço e extrair as informações necessárias para finalizar a máquina.
 
-![Redis CLI](img/redeemer/image%201.png)
+![Redis CLI](../img/redeemer/image%201.png)
 
 ---
 

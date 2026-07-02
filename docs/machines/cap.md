@@ -52,7 +52,7 @@ Ao acessar o IP no navegador, encontro uma tela de **Security Logs** com uma lis
 
 Analisando a URL, percebo que é possível alterar o ID do usuário para baixar os PCAPs de outros usuários.
 
-![Security Logs Interface](img/cap/image.png)
+![Security Logs Interface](../img/cap/image.png)
 
 ---
 
@@ -64,7 +64,7 @@ Ao mudar o ID na URL, consigo baixar PCAPs de outros usuários:
 
 Baixei o PCAP do user ID 1 e abri no Wireshark para analisar.
 
-![Analisando PCAP](img/cap/image%201.png)
+![Analisando PCAP](../img/cap/image%201.png)
 
 Encontrei uma requisição HTTP com as seguintes credenciais:
 - **Usuário:** nathan
@@ -76,7 +76,7 @@ Encontrei uma requisição HTTP com as seguintes credenciais:
 
 Com as credenciais encontradas, acesso o SSH como o usuário nathan.
 
-![SSH Acesso](img/cap/image%202.png)
+![SSH Acesso](../img/cap/image%202.png)
 
 Consegui acesso! Agora vou em busca da flag de usuário e depois escalar privilégios para root.
 
@@ -99,7 +99,7 @@ Agora preciso escalar privilégios. Vou usar o LinPEAS para enumerar vetores de 
 
 Abro um servidor HTTP na minha máquina para disponibilizar o linpeas.sh:
 
-![Download do LinPEAS](img/cap/image%203.png)
+![Download do LinPEAS](../img/cap/image%203.png)
 
 **Na máquina alvo:**
 ```bash
@@ -116,7 +116,7 @@ Com o scan do LinPEAS, vejo que o usuário **nathan** tem permissão para **cap_
 
 Isso significa que podemos mudar o UID do processo, conseguindo virar root!
 
-![Capabilities Encontradas](img/cap/image%204.png)
+![Capabilities Encontradas](../img/cap/image%204.png)
 
 ---
 
@@ -130,7 +130,7 @@ Com esse script, consigo mudar para UID 0 (root) e abrir uma shell:
 /usr/bin/python3.8 -c 'import os; os.setuid(0); os.system("/bin/bash")'
 ```
 
-![Exploração de Privilegios](img/cap/image%205.png)
+![Exploração de Privilegios](../img/cap/image%205.png)
 
 Pronto! Agora tenho acesso root e posso capturar a flag final.
 

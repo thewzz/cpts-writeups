@@ -50,25 +50,25 @@ nmap -sVC -p- 10.129.1.12
 
 Enumerada porta 445, que geralmente se utiliza o protocolo SMB. Vou tentar listar os diretórios compartilhados via SMB.
 
-![Enumeração Nmap](img/dancing/image.png)
+![Enumeração Nmap](../img/dancing/image.png)
 
 ### Passo 2 - Listando compartilhamentos
 
 Descobri alguns diretórios, vou tentar acessar o disco WorkShares.
 
-![SMB Shares](img/dancing/image%201.png)
+![SMB Shares](../img/dancing/image%201.png)
 
 ### Passo 3 - Acessando Workshares
 
 Consegui me conectar ao disco workshares, vou procurar por algo.
 
-![Acesso Workshares](img/dancing/image%202.png)
+![Acesso Workshares](../img/dancing/image%202.png)
 
 ### Passo 4 - Encontrando arquivos
 
 Encontrei um arquivo chamado worknotes.txt e outro chamado flag.txt, fiz o download dos dois, onde obtive as flags.
 
-![Arquivos encontrados](img/dancing/image%203.png)
+![Arquivos encontrados](../img/dancing/image%203.png)
 
 ---
 

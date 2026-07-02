@@ -49,7 +49,7 @@ nmap -sV -p- -T4 10.129.45.170
 
 Enumerando portas e serviços que estão rodando no alvo.
 
-![Enumeração de portas e serviços](img/silentium/image.png)
+![Enumeração de portas e serviços](../img/silentium/image.png)
 
 ---
 
@@ -62,7 +62,7 @@ Encontrei nomes de colaboradores na página:
 - Ben (Head of Financial Systems)
 - Elena Rossi (Chief Risk Officer)
 
-![silentium.htb](img/silentium/image%201.png)
+![silentium.htb](../img/silentium/image%201.png)
 
 ---
 
@@ -70,7 +70,7 @@ Encontrei nomes de colaboradores na página:
 
 Fazendo um fuzzing com o domínio encontrado, foi descoberto o subdomínio **staging.silentium.htb**.
 
-![staging.silentium.htb](img/silentium/image%202.png)
+![staging.silentium.htb](../img/silentium/image%202.png)
 
 ---
 
@@ -80,7 +80,7 @@ Acessando o subdomínio via web, conseguimos entender que se trata de uma págin
 
 A página está usando **Flowise**.
 
-![Página de login](img/silentium/image%203.png)
+![Página de login](../img/silentium/image%203.png)
 
 ---
 
@@ -90,7 +90,7 @@ Como temos o nome dos colaboradores na página inicial de silentium.htb, tentei 
 
 Por surpresa, tive a resposta de um token temporário para fazer a troca de senha!
 
-![Password reset](img/silentium/image%204.png)
+![Password reset](../img/silentium/image%204.png)
 
 ---
 
@@ -102,7 +102,7 @@ Consegui alterar a senha para **Password@123**
 
 A chave de criptografia encontrada: **hdsVqdkOcLN4fwdpvMPtbAi2++qi8yFc**
 
-![Alteração de senha](img/silentium/image%205.png)
+![Alteração de senha](../img/silentium/image%205.png)
 
 ---
 
@@ -110,7 +110,7 @@ A chave de criptografia encontrada: **hdsVqdkOcLN4fwdpvMPtbAi2++qi8yFc**
 
 Depois de ter as credenciais, acessei o painel administrativo.
 
-![Painel admin 1](img/silentium/image%206.png)
+![Painel admin 1](../img/silentium/image%206.png)
 
 ---
 
@@ -120,7 +120,7 @@ Ao acessar o painel admin, identifiquei que está utilizando a ferramenta **Flow
 
 Com essa informação, decidi buscar por CVEs relacionadas à ferramenta. Encontrei dois exploits.
 
-![Flowise 1](img/silentium/image%207.png)
+![Flowise 1](../img/silentium/image%207.png)
 
 ---
 
@@ -130,7 +130,7 @@ Buscando sobre os exploits, vi que o **JS Injection** permite uma execução rem
 
 Se as variáveis de ambiente FLOWISE_USERNAME e FLOWISE_PASSWORD não estiverem configuradas, apenas o email e senha para acesso ao Flowise são necessários.
 
-![Flowise 2](img/silentium/image%208.png)
+![Flowise 2](../img/silentium/image%208.png)
 
 ---
 
@@ -138,7 +138,7 @@ Se as variáveis de ambiente FLOWISE_USERNAME e FLOWISE_PASSWORD não estiverem 
 
 Usando o exploit e setando os parâmetros necessários para a conexão, conseguimos abrir um reverse shell com o servidor.
 
-![Reverse shell](img/silentium/image%209.png)
+![Reverse shell](../img/silentium/image%209.png)
 
 ---
 
@@ -148,7 +148,7 @@ Com acesso ao shell, após várias tentativas procurando manualmente nas pastas,
 
 Decidi utilizar a credencial de SMTP como acesso ao SSH, onde consegui acessar o shell com o usuário **ben**.
 
-![SSH como ben](img/silentium/image%2010.png)
+![SSH como ben](../img/silentium/image%2010.png)
 
 ---
 
@@ -158,7 +158,7 @@ Acessei o sistema como ben e capturei a primeira flag.
 
 **User Flag:** `a89d6d7f3b1c4e9a2d5c8b7f4e6a1c3d`
 
-![User flag](img/silentium/image%2011.png)
+![User flag](../img/silentium/image%2011.png)
 
 ---
 
@@ -191,7 +191,7 @@ Começando a busca por possíveis vetores de escalonamento de privilégios.
 
 Alguns comandos não funcionaram, então busquei por binários que temos permissão de execução como root.
 
-![Escalação de privilégios](img/silentium/image%2012.png)
+![Escalação de privilégios](../img/silentium/image%2012.png)
 
 ---
 

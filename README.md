@@ -32,11 +32,11 @@ Este repositório reúne meus writeups de máquinas (HTB / laboratórios) e anot
 cpts-writeups/
 ├── docs/
 │   ├── index.md              # Página inicial (Home)
-│   ├── machines/             # Writeups das máquinas + imagens
+│   ├── machines/             # Writeups das máquinas
 │   ├── notes/                # Anotações de estudo
 │   ├── overrides/            # Customizações do tema
 │   ├── stylesheets/          # CSS extra (extra.css, home.css)
-│   └── img/                  # Imagens compartilhadas
+│   └── img/                  # Imagens dos writeups, organizadas por máquina
 ├── .github/workflows/
 │   └── deploy.yml            # Deploy automático no GitHub Pages
 └── mkdocs.yml                # Configuração do MkDocs

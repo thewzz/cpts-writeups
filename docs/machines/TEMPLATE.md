@@ -206,7 +206,7 @@ sudo -l
 
 <!-- Imagens em docs/machines/img/<nome>/. Use caminho relativo. Exemplo: -->
 
-`![Evidência](img/nome-maquina/scan.png)`
+`![Evidência](../img/nome-maquina/scan.png)`
 
 ---
 
