@@ -33,7 +33,7 @@ Recebemos um IP alvo. Realizamos um nmap para identificar portas abertas e servi
 nmap -sV <IP_ALVO>
 ```
 
-![Nmap Scan](../img/getting-started/nmap-scan.png)
+![Nmap Scan](img/getting-started/nmap-scan.png)
 
 #### 2. Encontrando a Página Admin
 
@@ -42,23 +42,23 @@ Através do scan, identificamos uma página administrativa. Tentamos credenciais
 - **Usuário:** admin
 - **Senha:** admin
 
-![Admin Login](../img/getting-started/admin-login.png)
+![Admin Login](img/getting-started/admin-login.png)
 
 #### 3. Acesso ao Admin Panel
 
-![Admin Panel](../img/getting-started/admin-panel.png)
+![Admin Panel](img/getting-started/admin-panel.png)
 
-![Theme Settings](../img/getting-started/theme-settings.png)
+![Theme Settings](img/getting-started/theme-settings.png)
 
 Após login, encontramos um recurso de backup e a opção de editar temas.
 
-![Backup Option](../img/getting-started/backup-option.png)
+![Backup Option](img/getting-started/backup-option.png)
 
 #### 4. Injeção de Reverse Shell
 
 Conseguimos editar o código fonte do tema. Adicionamos um PHP reverse shell:
 
-![Theme Editor](../img/getting-started/theme-editor.png)
+![Theme Editor](img/getting-started/theme-editor.png)
 
 ```php
 <?php
@@ -66,7 +66,7 @@ Conseguimos editar o código fonte do tema. Adicionamos um PHP reverse shell:
 ?>
 ```
 
-![PHP Reverse Shell](../img/getting-started/php-reverse-shell.png)
+![PHP Reverse Shell](img/getting-started/php-reverse-shell.png)
 
 #### 5. Obtenção de Shell
 
