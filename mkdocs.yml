@@ -48,6 +48,8 @@ nav:
       - Easy:
         - Silentium: machines/silentium.md
         - Facts: machines/facts.md
+      - Medium:
+        - Shells e Payloads - Desafio: machines/shells-e-payloads-desafio.md
   - Home: index.md
   - Anotações:
     - Estudos Footprinting:
