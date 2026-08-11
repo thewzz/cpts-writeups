@@ -46,7 +46,7 @@
 Logo após o acesso RDP ao `skills-foothold`, um arquivo `access-creds.txt` na
 área de trabalho continha credenciais de dois serviços internos:
 
-![Arquivo access-creds.txt com credenciais do blog e do Tomcat](img/shells-e-payloads-desafio/01-access-creds-rdp.png)
+![Arquivo access-creds.txt com credenciais do blog e do Tomcat](../img/shells-e-payloads-desafio/01-access-creds-rdp.png)
 
 ```text
 to manage the blog:
@@ -75,8 +75,8 @@ sudo nmap -sV -sC -sS -Pn --disable-arp-ping 172.16.1.13
 | 139 | netbios-ssn | Microsoft Windows netbios-ssn |
 | 445 | microsoft-ds | Windows Server 2016 Standard 14393 microsoft-ds |
 
-![Resultado do nmap em 172.16.1.13 - parte 1 (IIS, RPC, SMB)](img/shells-e-payloads-desafio/08-nmap-172-16-1-13-parte1.png)
-![Resultado do nmap em 172.16.1.13 - parte 2 (host SHELLS-WINBLUE, Windows Server 2016)](img/shells-e-payloads-desafio/09-nmap-172-16-1-13-parte2.png)
+![Resultado do nmap em 172.16.1.13 - parte 1 (IIS, RPC, SMB)](../img/shells-e-payloads-desafio/08-nmap-172-16-1-13-parte1.png)
+![Resultado do nmap em 172.16.1.13 - parte 2 (host SHELLS-WINBLUE, Windows Server 2016)](../img/shells-e-payloads-desafio/09-nmap-172-16-1-13-parte2.png)
 
 ### Descobertas
 
@@ -142,7 +142,7 @@ whoami
 nt authority\local service
 ```
 
-![Shell reverso obtido via WAR malicioso no Tomcat (host shells-winsvr)](img/shells-e-payloads-desafio/02-reverse-shell-tomcat-winsvr.png)
+![Shell reverso obtido via WAR malicioso no Tomcat (host shells-winsvr)](../img/shells-e-payloads-desafio/02-reverse-shell-tomcat-winsvr.png)
 
 !!! success "Acesso — shells-winsvr"
     Shell reversa como `nt authority\local service` em `172.16.1.11`
@@ -154,7 +154,7 @@ Adicionando `blog.inlanefreight.local` ao `/etc/hosts` (→ `172.16.1.12`) e
 logando com `admin`/`admin123!@#`, um post no blog apontava para um exploit
 autenticado do Exploit-DB:
 
-![Post no blog com link para exploit do Facebook-styled blog no Exploit-DB](img/shells-e-payloads-desafio/03-blog-post-link-exploit.png)
+![Post no blog com link para exploit do Facebook-styled blog no Exploit-DB](../img/shells-e-payloads-desafio/03-blog-post-link-exploit.png)
 
 > *Lightweight facebook-styled blog 1.3 - Remote Code Execution (RCE)
 > (Authenticated) (Metasploit)* — exploit-db.com/exploits/50064
@@ -175,7 +175,7 @@ whoami
 www-data
 ```
 
-![Exploração via msfconsole (fbs_blog_rce) com sessão meterpreter e shell www-data](img/shells-e-payloads-desafio/04-msf-fbs-blog-rce-shell.png)
+![Exploração via msfconsole (fbs_blog_rce) com sessão meterpreter e shell www-data](../img/shells-e-payloads-desafio/04-msf-fbs-blog-rce-shell.png)
 
 Confirmando o host:
 
@@ -187,7 +187,7 @@ hostnamectl
   Architecture: x86-64
 ```
 
-![Informações do sistema via hostnamectl (host shells-nixsvr, Ubuntu 20.04.3)](img/shells-e-payloads-desafio/05-hostname-so-nixsvr.png)
+![Informações do sistema via hostnamectl (host shells-nixsvr, Ubuntu 20.04.3)](../img/shells-e-payloads-desafio/05-hostname-so-nixsvr.png)
 
 !!! success "Acesso — shells-nixsvr"
     Shell como `www-data` em `172.16.1.12` (`shells-nixsvr`), via RCE
@@ -197,12 +197,12 @@ hostnamectl
 
 O indexador de diretórios do IIS estava exposto, com `upload.aspx` disponível:
 
-![Indexador de arquivos IIS exposto em 172.16.1.13 com upload.aspx](img/shells-e-payloads-desafio/10-indexador-arquivos-iis.png)
+![Indexador de arquivos IIS exposto em 172.16.1.13 com upload.aspx](../img/shells-e-payloads-desafio/10-indexador-arquivos-iis.png)
 
 Um webshell ASPX (**Antak**) foi enviado via `upload.aspx`, dando acesso
 interativo ao PowerShell:
 
-![Webshell Antak executando PowerShell (iis apppool\defaultapppool)](img/shells-e-payloads-desafio/11-antak-webshell-powershell.png)
+![Webshell Antak executando PowerShell (iis apppool\defaultapppool)](../img/shells-e-payloads-desafio/11-antak-webshell-powershell.png)
 
 ```
 PS> whoami
@@ -232,7 +232,7 @@ msf6 > search eternalblue
 | 3 | `auxiliary/scanner/smb/smb_ms17_010` | normal |
 | 4 | `exploit/windows/smb/smb_doublepulsar_rce` | great |
 
-![Módulos EternalBlue disponíveis no msfconsole (ms17_010)](img/shells-e-payloads-desafio/12-msf-modulos-eternalblue.png)
+![Módulos EternalBlue disponíveis no msfconsole (ms17_010)](../img/shells-e-payloads-desafio/12-msf-modulos-eternalblue.png)
 
 Usando o módulo `2` (`auxiliary/admin/smb/ms17_010_command`), com `RHOSTS
 172.16.1.13` e o comando `type C:\Users\Administrator\Desktop\Skills-flag.txt`:
@@ -251,7 +251,7 @@ msf6 auxiliary(admin/smb/ms17_010_command) > exploit
 One-H0st-Down!
 ```
 
-![Exploit ms17_010_command executado com sucesso, flag final capturada](img/shells-e-payloads-desafio/13-eternalblue-exploit-flag-final.png)
+![Exploit ms17_010_command executado com sucesso, flag final capturada](../img/shells-e-payloads-desafio/13-eternalblue-exploit-flag-final.png)
 
 !!! success "Acesso — SHELLS-WINBLUE"
     Execução de comando como **SYSTEM** via `ms17_010_command`
@@ -266,7 +266,7 @@ One-H0st-Down!
 
 Com a shell `www-data`, foram enumerados vhosts internos e o filesystem:
 
-![Enumeração de vhosts e diretórios do sistema (admin, app, blog, dev, drupal.inlanefreight.local)](img/shells-e-payloads-desafio/06-vhosts-e-diretorios.png)
+![Enumeração de vhosts e diretórios do sistema (admin, app, blog, dev, drupal.inlanefreight.local)](../img/shells-e-payloads-desafio/06-vhosts-e-diretorios.png)
 
 ```text
 admin.inlanefreight.local
@@ -286,7 +286,7 @@ cat flag.txt
 B1nD_Shells_r_cool
 ```
 
-![Flag capturada em customscripts/flag.txt (shells-nixsvr)](img/shells-e-payloads-desafio/07-flag-nixsvr.png)
+![Flag capturada em customscripts/flag.txt (shells-nixsvr)](../img/shells-e-payloads-desafio/07-flag-nixsvr.png)
 
 ### Resumo de acessos obtidos
 
