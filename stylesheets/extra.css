@@ -1,0 +1,199 @@
+/* ============================================
+   Hacker Theme - CPTS Writeups
+   ============================================ */
+
+:root {
+    /* Cores hacker */
+    -- hacker-primary: #00ff41;
+    -- hacker-accent: #ff0033;
+    -- hacker-bg: #0d1117;
+    -- hacker-surface: #161b22;
+    -- hacker-text: #c9d1d9;
+    -- hacker-code-bg: #0d1117;
+}
+
+/* Fonte terminal */
+body {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    background: var(--hacker-bg);
+}
+
+/* Títulos com glow verde */
+h1, h2, h3 {
+    color: #00ff41 !important;
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+}
+
+/* Código com borda hacker */
+pre {
+    border: 1px solid #00ff41;
+    border-radius: 4px;
+    background: #0d1117 !important;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
+}
+
+/* Blocos de código inline */
+code {
+    background: #161b22 !important;
+    color: #00ff41 !important;
+    border: 1px solid #30363d;
+    border-radius: 3px;
+}
+
+/* Tabelas estilizadas */
+table {
+    border: 1px solid #30363d !important;
+    border-collapse: collapse;
+}
+
+th {
+    background: #161b22 !important;
+    color: #00ff41 !important;
+    border-bottom: 2px solid #00ff41 !important;
+}
+
+td {
+    border: 1px solid #30363d !important;
+    color: #c9d1d9 !important;
+}
+
+tr:hover {
+    background: rgba(0, 255, 65, 0.05) !important;
+}
+
+/* Links com efeito hacker */
+a {
+    color: #00ff41 !important;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+a:hover {
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+    text-decoration: underline;
+}
+
+/* Admonitions/custom blocks */
+.admonition {
+    border-left: 4px solid #00ff41 !important;
+    background: #161b22;
+    border-radius: 4px;
+}
+
+.admonition-title {
+    color: #00ff41 !important;
+}
+
+/* Checkboxes */
+input[type="checkbox"] {
+    accent-color: #00ff41;
+}
+
+/* Selection */
+::selection {
+    background: rgba(0, 255, 65, 0.3);
+    color: #ffffff;
+}
+
+/* Imagens com borda e glow sutil */
+img {
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.1);
+    transition: all 0.3s;
+}
+
+img:hover {
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+    transform: scale(1.02);
+}
+
+/* Barra lateral */
+.md-sidebar {
+    background: #0d1117;
+}
+
+/* Navegação */
+.md-nav__item--active > a {
+    color: #00ff41 !important;
+}
+
+.md-nav__link:hover {
+    color: #00ff41 !important;
+}
+
+/* Search */
+.md-search__input {
+    background: #161b22 !important;
+    border: 1px solid #30363d !important;
+}
+
+.md-search__input::placeholder {
+    color: #8b949e;
+}
+
+/* Top bar */
+.md-header {
+    background: #161b22 !important;
+    border-bottom: 1px solid #00ff41;
+}
+
+/* Tab nav */
+.md-tabs__link--active {
+    color: #00ff41 !important;
+}
+
+/* Blockquotes */
+blockquote {
+    border-left: 4px solid #ff0033 !important;
+    background: rgba(255, 0, 51, 0.05);
+    color: #ff6b6b;
+}
+
+/* Listas com marcadores customizados */
+ul li::marker {
+    color: #00ff41;
+}
+
+ol li::marker {
+    color: #00ff41;
+    font-weight: bold;
+}
+
+/* Scrollbar customizada */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0d1117;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #00ff41;
+}
+
+/* Efeito de scanline sutil (opcional) */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 255, 65, 0.01) 2px,
+        rgba(0, 255, 65, 0.01) 4px
+    );
+    z-index: 9999;
+}
