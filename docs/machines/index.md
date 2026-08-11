@@ -15,6 +15,7 @@
 | [Redeemer](redeemer.md) | Easy | Linux | ✅ Concluída |
 | [Footprinting Tests - Easy](footprinting-tests-easy.md) | Easy | Linux | ✅ Concluída |
 | [Footprinting Tests - Medium](footprinting-tests-medium.md) | Medium | Windows | ✅ Concluída |
+| [Shells e Payloads - Desafio](shells-e-payloads-desafio.md) | Medium | Misto (Windows/Linux) | ✅ Concluída |
 | [Footprinting Tests - Hard](footprinting-tests-hard.md) | Hard | Linux | ✅ Concluída |
 
 ---
@@ -25,5 +26,4 @@
 |:--------|:------------|:---|:-------|
 | [Silentium](silentium.md) | Easy | Linux | 🔄 Em Andamento |
 | [Facts](facts.md) | Easy | Linux | 🔄 Em Andamento |
-| [Shells e Payloads - Desafio](shells-e-payloads-desafio.md) | Medium | Misto (Windows/Linux) | 🔄 Em Andamento |
 

@@ -18,7 +18,7 @@ jobs:
           python-version: 3.12
 
       - name: Install MkDocs and Material theme
-        run: pip install --break-system-packages mkdocs-material
+        run: pip install --break-system-packages mkdocs-material mkdocs-static-i18n
 
       - name: Deploy to GitHub Pages
         run: mkdocs gh-deploy --force --strict

@@ -42,14 +42,13 @@ nav:
         - Footprinting Tests - Easy: machines/footprinting-tests-easy.md
       - Medium:
         - Footprinting Tests - Medium: machines/footprinting-tests-medium.md
+        - Shells e Payloads - Desafio: machines/shells-e-payloads-desafio.md
       - Hard:
         - Footprinting Tests - Hard: machines/footprinting-tests-hard.md
     - Em Andamento:
       - Easy:
         - Silentium: machines/silentium.md
         - Facts: machines/facts.md
-      - Medium:
-        - Shells e Payloads - Desafio: machines/shells-e-payloads-desafio.md
   - Home: index.md
   - Anotações:
     - Estudos Footprinting:

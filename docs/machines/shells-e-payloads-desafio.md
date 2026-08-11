@@ -29,7 +29,7 @@
 | **Plataforma / Módulo** | CPTS — Shells & Payloads |
 | **Domínio interno** | `inlanefreight.local` |
 | **Data** | 07/08/2026 |
-| **Status** | 🔄 Em Andamento |
+| **Status** | ✅ Finalizado |
 
 !!! abstract "Objetivo"
     A partir de um host de salto na rede interna, obter acesso e capturar as
@@ -308,10 +308,6 @@ B1nD_Shells_r_cool
 |:-----|:------|
 | `B1nD_Shells_r_cool` | `customscripts/flag.txt` (shells-nixsvr, 172.16.1.12) |
 | `One-H0st-Down!` | `C:\Users\Administrator\Desktop\Skills-flag.txt` (SHELLS-WINBLUE, 172.16.1.13) |
-
-!!! note
-    Status marcado como **Em Andamento** no cofre de origem — não há registro
-    no log de que todos os hosts/objetivos do desafio tenham sido cobertos.
 
 ---
 
