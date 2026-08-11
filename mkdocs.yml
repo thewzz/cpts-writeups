@@ -9,6 +9,7 @@ extra_css:
 
 theme:
   name: material
+  language: pt-BR
   custom_dir: docs/overrides
   palette:
     - scheme: slate
@@ -19,6 +20,32 @@ theme:
     - navigation.top
     - search.highlight
     - content.code.copy
+
+plugins:
+  - search
+  - i18n:
+      docs_structure: suffix
+      languages:
+        - locale: pt-BR
+          name: Português (BR)
+          default: true
+          build: true
+        - locale: en
+          name: English
+          build: true
+          site_name: CPTS Writeups
+          site_description: Writeups from the CPTS preparatory course
+          theme:
+            language: en
+          nav_translations:
+            Máquinas: Machines
+            Índice: Index
+            Concluídos: Completed
+            Em Andamento: In Progress
+            Shells e Payloads - Desafio: Shells and Payloads - Challenge
+            Anotações: Notes
+            Estudos Footprinting: Footprinting Studies
+            SMB Client: SMB Client
 
 markdown_extensions:
   - pymdownx.highlight:
